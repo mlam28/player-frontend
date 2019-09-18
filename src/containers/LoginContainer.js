@@ -1,7 +1,7 @@
 import React from 'react'
 // import {Button} from 'semantic-ui-react'
 
-class LoginContainer extends React.Component {
+export default class LoginContainer extends React.Component {
 
     render(){
         return(
