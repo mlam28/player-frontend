@@ -13,8 +13,38 @@ const userReducer = (state=null, action) => {
     }
 }
 
+
+const tokenReducer = (state=null, action) => {
+    switch(action.type) {
+        case 'SET-TOKEN': 
+            return action.token;
+        case 'LOGOUT':
+            return null
+        default:
+            return state
+    }
+}
+
+const pageReducer = (state='login', action) => {
+    switch(action.type){
+        case 'LOGIN-PAGE':
+            return 'login'
+        case 'HOME-PAGE':
+            return 'home'
+        case 'BROWSE-PAGE':
+            return 'browse'
+        default:
+            return state
+    }
+}
+
 const rootReducer = combineReducers({
-    currentUser: userReducer
+    currentUser: userReducer,
+    token: tokenReducer,
+    page: pageReducer
 })
+
+
+
 
 export default rootReducer

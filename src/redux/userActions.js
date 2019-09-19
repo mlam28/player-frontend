@@ -10,5 +10,18 @@ function logoutUser () {
     return {type: 'LOGOUT-USER'}
 }
 
+function setToken (token){
+    return {type: 'SET-TOKEN', token: token}
+}
 
-export {setUser, logoutUser}
+function setHome(){
+    return {type: 'HOME-PAGE'}
+}
+
+function setBrowse(){
+    return {type: 'BROWSE-PAGE'}
+}
+
+
+
+export {setUser, logoutUser, setToken, setHome, setBrowse}
