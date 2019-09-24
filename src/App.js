@@ -2,15 +2,27 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {setUser} from './redux/userActions'
-import {setToken, setHome} from './redux/userActions'
+import {setToken, setHome, fetchUserPlaylists, fetchFeaturedPlaylists} from './redux/userActions'
 import HomePage from './containers/HomePage'
 import LoginContainer from './containers/LoginContainer'
 import { Route, withRouter, Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 import NavBar from './components/NavBar'
 import Header from './components/Header'
+import SongContainer from './containers/SongContainer'
 import BrowseContainer from './containers/BrowsePage'
+import SpotifyPlayer from 'react-spotify-web-playback';
+import styled from 'styled-components'
 
+
+const StyledPlayer = styled.div` 
+  visibility: ${props => props.visible ? "visible" : "hidden"};
+  position: fixed;
+  bottom: 0;
+  z-index: 100;
+  width: 100%;
+}
+`
 
 function getUrlParams(search) {
   let hashes = search.slice(search.indexOf('?') + 1).split('&')
@@ -21,49 +33,68 @@ function getUrlParams(search) {
   })
 
   return params
-}
+} 
 
 class App extends React.Component {
 
   componentDidMount(){
-    debugger
     if (window.location.hash.includes('display_name')){
     let hash = getUrlParams(window.location.hash.slice(1))
     this.props.setUser(hash)
-    this.props.setToken(hash.access_token)
+    this.props.setToken(hash.token)
     this.props.setHome()
-    debugger
+    window.localStorage.setItem('user', JSON.stringify({token: hash.token, userId: hash.id, spotifyId: hash.spotify_id, spotify_uri: hash.spotify_uri}))
+   
+    this.props.fetchUserPlaylists(hash.token)
     this.props.history.push('/home')
+    } else if (window.localStorage.getItem('user')) {
+        let user = JSON.parse(window.localStorage.getItem('user'))
+        this.props.setUser(user)
+        this.props.setHome()
+        this.props.fetchUserPlaylists(user.token)
+       this.props.fetchFeaturedPlaylists(user.token)
+       this.props.history.push('/home')
+        
+    } else {
+      this.props.history.push('/login')
     }
+  }
+
+
+  formatTrackUris = (tracks) => {
+    return tracks.map(track => track.uri)
   }
 
   render(){
     return (
       <div className="App"> 
-      <Route path='/' render={() => <Redirect to='/login'/>}></Route>    
-      <NavBar></NavBar>
-      <Header />
-      <Route exact path='/home' render={() => <HomePage />}></Route>
-      <Route exact path='/browse' render={() => <BrowseContainer />}></Route>
-     <Route path='/login' render={() => <LoginContainer />}></Route>
-        
-      
+    {Object.keys(this.props.currentUser).length > 0 ? <><NavBar></NavBar><Header /><Route exact path='/home' render={() => <HomePage />}></Route><Route exact path='/browse' render={() => <BrowseContainer />}></Route><Route path='/playlist/:name' render={() => <SongContainer />}></Route></> : <Route path='/login' render={() => <LoginContainer />}></Route>
+    }
+    <StyledPlayer visible={true}><SpotifyPlayer id='spotify-player' magnifySliderOnHover={true} autoPlay={true} offset={this.props.playPosition} token={this.props.currentUser.token} uris={this.formatTrackUris(this.props.currentTracks)}/></StyledPlayer>
       </div>
     );
   }
 }
 
+
+
+
 const mapStateToProps = (store) => {
   return{
     currentUser: store.currentUser,
-    token: store.token
+    token: store.token,
+    currentTracks: store.currentTracks,
+    playPosition: store.playPosition 
   }
 }
 const mapDispatchToProps = (dispatch) => {
   return{
     setUser: (user) => dispatch(setUser(user)),
     setToken: (token) => dispatch(setToken(token)),
-    setHome: () => dispatch(setHome)
+    setHome: () => dispatch(setHome()),
+    fetchUserPlaylists: (token) => dispatch(fetchUserPlaylists(token)),
+    fetchFeaturedPlaylists: (token) => dispatch(fetchFeaturedPlaylists(token))
+    
   }
 }
 

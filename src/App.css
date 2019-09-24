@@ -31,3 +31,113 @@
     transform: rotate(360deg);
   }
 }
+
+#nav-bar{
+  display: inline-flex;
+  float: left;
+}
+
+#header {
+  height: 20em
+}
+
+#menu-playlists-container {
+  height: 90em;
+}
+
+.card-container{
+  flex-direction: row;
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  overflow-x: scroll;
+  background: blue;
+  height: 31em;
+}
+
+.playlist-card{
+  background: none;
+  display: flex;
+  margin: 1em 2em;
+}
+
+.ui.card{
+  margin: 1em 2em;
+}
+
+.card-image{
+  width: 20em;
+}
+
+
+
+.ui.card:first-child {
+  margin-top: 1em !important;
+}
+
+
+
+/* .col {
+  flex: 1
+} */
+
+/* .flex-grid-thirds{
+  display: flex;
+  justify-content: space-between;
+}
+
+.flex-grid-thirds .col {
+  width: 28%;
+ 
+}
+
+.flex-grid-thirds .small-col{
+  width: 15%
+} */
+
+#song-container{
+  display: flex;
+    flex-wrap: wrap;
+    overflow: scroll;
+    max-height: 65em;
+    bottom: 0;
+
+}
+
+
+
+.my-row {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding-top: 15px;
+  padding-bottom: 15px
+}
+
+.my-column {
+  display: flex;
+  flex-direction: column;
+  width: 23%;
+  
+}
+
+.add-column{
+  display: flex;
+  flex-direction: column;
+  width: 10%;
+  align-items: center;
+}
+
+.my-small-column{
+  display: flex;
+  flex-direction: column;
+  width: 10%
+}
+
+
+
+/* Menu Styling */
+.my-menu-item i{
+  padding: 7px
+}
+
