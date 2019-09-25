@@ -33,7 +33,6 @@ function setUserPlaylists(playlists){
 
 
 function formatPlaylists(playlistObj){
-    debugger
   return playlistObj.items.map(x => Object.assign({}, {'id': x.id, 'name': x.name, 'uri': x.uri, 'images': x.images, 'tracks': x.tracks}))
 }
 function fetchUserPlaylists(token){
@@ -68,8 +67,23 @@ function fetchPlaylistTracks(token, playlistId){
         dispatch(setQueueTracks(tracks));
         
         })
-        // .then(tracks => {console.log(tracks); dispatch(setPlaylistTracks(tracks))})
+
     }
+}
+
+function setSharedPlaylists(playlists){
+    return {type: 'SET-SHARED', playlists: playlists}
+}
+
+
+function fetchSharedPlaylists(){
+
+    return function (dispatch, getState) {
+        const userId = getState().currentUser.userId
+  
+        fetch(`http://localhost:3000/users/${userId}`).then(resp => resp.json()).then(data => {console.log(data); dispatch(setSharedPlaylists(data))})
+    }
+    
 }
 
 
@@ -89,6 +103,29 @@ function logoutUserFromStorage(){
     }
 }
 
+function playMusic(){
+    return {type: 'PLAY'}
+}
+
+function pauseMusic(){
+    return {type: 'PAUSE'}
+}
+
+
+function makePlaylist(name){
+    const data = {
+        playlist: {name: 'something'}
+    }
+    const obj = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    }
+
+    fetch(`http://localhost:3000/playlists`, obj)
+}
 
 
 
@@ -96,4 +133,7 @@ function logoutUserFromStorage(){
 
 
 
-export {setUser, logoutUser, setToken, setHome, setBrowse, fetchUserPlaylists, logoutUserFromStorage, fetchPlaylistTracks, setPlaylistPage, setCurrentTracks, setQueueTracks, setPlayPosition, fetchFeaturedPlaylists}
+
+
+
+export {setUser, logoutUser, setToken, setHome, setBrowse, fetchUserPlaylists, logoutUserFromStorage, fetchPlaylistTracks, setPlaylistPage, setCurrentTracks, setQueueTracks, setPlayPosition, fetchFeaturedPlaylists, fetchSharedPlaylists, playMusic, pauseMusic, makePlaylist}

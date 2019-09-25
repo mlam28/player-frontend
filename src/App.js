@@ -2,7 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {setUser} from './redux/userActions'
-import {setToken, setHome, fetchUserPlaylists, fetchFeaturedPlaylists} from './redux/userActions'
+import {setToken, setHome, fetchUserPlaylists, fetchFeaturedPlaylists, fetchSharedPlaylists} from './redux/userActions'
 import HomePage from './containers/HomePage'
 import LoginContainer from './containers/LoginContainer'
 import { Route, withRouter, Redirect} from 'react-router-dom'
@@ -53,6 +53,7 @@ class App extends React.Component {
         this.props.setHome()
         this.props.fetchUserPlaylists(user.token)
        this.props.fetchFeaturedPlaylists(user.token)
+       this.props.fetchSharedPlaylists()
        this.props.history.push('/home')
         
     } else {
@@ -62,7 +63,8 @@ class App extends React.Component {
 
 
   formatTrackUris = (tracks) => {
-    return tracks.map(track => track.uri)
+    let songs = tracks.map(track => track.uri)
+    return songs
   }
 
   render(){
@@ -70,11 +72,15 @@ class App extends React.Component {
       <div className="App"> 
     {Object.keys(this.props.currentUser).length > 0 ? <><NavBar></NavBar><Header /><Route exact path='/home' render={() => <HomePage />}></Route><Route exact path='/browse' render={() => <BrowseContainer />}></Route><Route path='/playlist/:name' render={() => <SongContainer />}></Route></> : <Route path='/login' render={() => <LoginContainer />}></Route>
     }
-    <StyledPlayer visible={true}><SpotifyPlayer id='spotify-player' magnifySliderOnHover={true} autoPlay={true} offset={this.props.playPosition} token={this.props.currentUser.token} uris={this.formatTrackUris(this.props.currentTracks)}/></StyledPlayer>
+
+
+    <StyledPlayer visible={true}><SpotifyPlayer id='spotify-player' play={this.props.play} magnifySliderOnHover={true} offset={this.props.playPosition} autoPlay={true} token={this.props.currentUser.token} uris={this.formatTrackUris(this.props.currentTracks)}/></StyledPlayer>
       </div>
     );
   }
 }
+
+
 
 
 
@@ -84,7 +90,8 @@ const mapStateToProps = (store) => {
     currentUser: store.currentUser,
     token: store.token,
     currentTracks: store.currentTracks,
-    playPosition: store.playPosition 
+    playPosition: store.playPosition,
+    play: store.play
   }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -93,7 +100,8 @@ const mapDispatchToProps = (dispatch) => {
     setToken: (token) => dispatch(setToken(token)),
     setHome: () => dispatch(setHome()),
     fetchUserPlaylists: (token) => dispatch(fetchUserPlaylists(token)),
-    fetchFeaturedPlaylists: (token) => dispatch(fetchFeaturedPlaylists(token))
+    fetchFeaturedPlaylists: (token) => dispatch(fetchFeaturedPlaylists(token)),
+    fetchSharedPlaylists: () => dispatch(fetchSharedPlaylists())
     
   }
 }

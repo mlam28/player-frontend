@@ -5,13 +5,19 @@ import CardContainer from './CardContainer'
 
 class HomePage extends React.Component{
 
+    
+    filterShared = () => {
+    const uris = this.props.sharedPlaylists.map(playlist => playlist.uri)
+      return  this.props.userPlaylists.filter(playlist => !uris.includes(playlist.uri))
+    }
+
     render(){
         return(
             <div> 
                 <h2>Your Shared Playlists</h2>
-                <CardContainer playlists={null}/>
+                <CardContainer playlists={this.props.sharedPlaylists}/>
                 <h2>Your Personal Playlists</h2>
-                <CardContainer playlists={this.props.userPlaylists}/>
+                <CardContainer playlists={this.filterShared()}/>
             </div>
         )
 }
@@ -21,7 +27,8 @@ class HomePage extends React.Component{
 const mapStateToProps = (store) => {
     return {
         currentUser: store.currentUser,
-        userPlaylists: store.userPlaylists
+        userPlaylists: store.userPlaylists,
+        sharedPlaylists: store.sharedPlaylists
     }
 }
 

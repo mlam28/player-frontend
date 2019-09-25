@@ -91,6 +91,29 @@ const featuredPlaylistsReducer = (state=[], action) => {
     }
 }
 
+const sharedPlaylistsReducer = (state=[], action) => {
+    switch(action.type){
+        case 'SET-SHARED':
+            return action.playlists
+        case 'RESET':
+            return []
+        default:
+            return state
+    }
+}
+
+
+const playReducer = (state=null, action) => {
+    switch(action.type){
+        case 'PLAY':
+            return true
+        case 'PAUSE':
+            return false
+        default:
+            return state
+    }
+}
+
 const rootReducer = combineReducers({
     currentUser: userReducer,
     token: tokenReducer,
@@ -99,7 +122,9 @@ const rootReducer = combineReducers({
     currentTracks: TrackReducer,
     queueTracks: queueReducer,
     playPosition: playPositionReducer,
-    featuredPlaylists: featuredPlaylistsReducer
+    featuredPlaylists: featuredPlaylistsReducer,
+    sharedPlaylists: sharedPlaylistsReducer,
+    play: playReducer
 })
 
 

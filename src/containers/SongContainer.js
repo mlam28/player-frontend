@@ -2,7 +2,7 @@ import React from 'react'
 
 import {connect} from 'react-redux'
 import {Icon} from 'semantic-ui-react'
-import {setCurrentTracks, setPlayPosition} from '../redux/userActions'
+import {setCurrentTracks, setPlayPosition, playMusic} from '../redux/userActions'
 import FormPop from '../components/FormPop'
 
 
@@ -15,7 +15,7 @@ class SongContainer extends React.Component{
         console.log('clicked')
         this.props.setCurrentTracks(this.props.queueTracks)
         this.props.setPlayPosition(index)
-        debugger
+       this.props.playMusic()
     }
 
     render(){
@@ -57,7 +57,8 @@ const mapStateToProps = (store) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         setCurrentTracks: (tracks) => dispatch(setCurrentTracks(tracks)),
-        setPlayPosition: (num) => dispatch(setPlayPosition(num))
+        setPlayPosition: (num) => dispatch(setPlayPosition(num)),
+        playMusic: () => dispatch(playMusic())
     }
 }
 

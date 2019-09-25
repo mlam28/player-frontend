@@ -3,8 +3,27 @@ import {NavLink} from 'react-router-dom'
 import {withRouter} from 'react-router-dom'
 import {Link} from 'react-router-dom'
 import { Menu, Icon} from 'semantic-ui-react'
+import { Header, Button, Popup, Grid } from 'semantic-ui-react'
+import {setHome, setBrowse} from '../redux/userActions'
+import {connect} from 'react-redux'
+
 
 class NavBar extends React.Component{
+
+  constructor(){
+    super()
+    this.state = {
+      playlistName: ''
+    }
+  }
+
+  handleSubmit = () => {
+    console.log('clicked')
+
+    this.setState({
+      playlistName: ''
+    })
+  }
 
     render(){
         return(
@@ -12,21 +31,27 @@ class NavBar extends React.Component{
             <NavLink to='/home'><Menu.Item
               name='home'
             //   active={activeItem === 'home'}
-              onClick={this.handleItemClick}
+              onClick={this.props.setHome}
             /></NavLink>
             <NavLink to='/browse'><Menu.Item
               name='Browse'
             //   active={activeItem === 'messages'}
-              onClick={this.handleItemClick}
+              onClick={this.props.setBrowse}
             /></NavLink>
             <Menu.Item id='menu-playlists-container'>
               <Menu.Header>Shared Playlists</Menu.Header>
                 <Menu.Menu>
-                    <Menu.Item
-                      className='my-menu-item'
-                      name='New Playlist'
-                      content={<p>New Playlist<Icon name='add' color='yellow'></Icon></p>}
-                    />
+                <Menu.Item className='my-menu-item'>
+                          <Popup trigger={<p>New Playlist<Icon name='add' color='yellow'></Icon></p>} flowing hoverable>
+                              <Grid centered divided columns={1}>
+                                <Grid.Column textAlign='center'>
+                                  <Header as='h4'>Playlist Name</Header>
+                                  <input></input>
+                                  <Button onClick={this.handleSubmit}>Submit</Button>
+                                </Grid.Column>
+                              </Grid>
+                        </Popup>
+                </Menu.Item>
                 </Menu.Menu>
               </Menu.Item>
           </Menu>
@@ -34,4 +59,12 @@ class NavBar extends React.Component{
     }
 }
 
-export default withRouter(NavBar)
+
+const mapDispatchToProps = (dispatch) => {
+  return{
+    setHome: () => dispatch(setHome()),
+    setBrowse: () => dispatch(setBrowse())
+  }
+}
+
+export default withRouter(connect(null, mapDispatchToProps)(NavBar))

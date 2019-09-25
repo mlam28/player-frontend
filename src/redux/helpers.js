@@ -7,7 +7,7 @@ function formatDuration(milliseconds){
    if (leftSec.length <= 1){
        leftSec = "0" + leftSec
    }
-   debugger
+  
    return (`${minutes}:${leftSec}`)
    
 
