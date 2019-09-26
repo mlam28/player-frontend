@@ -6,7 +6,7 @@ const CardContainer = (props) => {
   let {playlists} = props
     return(
         <div className='card-container'>
-            {playlists ? playlists.map(playlist => <PlaylistCard key={playlist.uri} playlist={playlist}/>) : 'No Playlists'}
+            {playlists ? playlists.map(playlist => <PlaylistCard key={playlist.uri ? playlist.uri : playlist.id} playlist={playlist}/>) : 'No Playlists'}
         </div>
     )
 }

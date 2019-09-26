@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import {setUser} from './redux/userActions'
 import {setToken, setHome, fetchUserPlaylists, fetchFeaturedPlaylists, fetchSharedPlaylists} from './redux/userActions'
@@ -46,6 +45,8 @@ class App extends React.Component {
     window.localStorage.setItem('user', JSON.stringify({token: hash.token, userId: hash.id, spotifyId: hash.spotify_id, spotify_uri: hash.spotify_uri}))
    
     this.props.fetchUserPlaylists(hash.token)
+    
+    this.props.fetchSharedPlaylists(hash.id)
     this.props.history.push('/home')
     } else if (window.localStorage.getItem('user')) {
         let user = JSON.parse(window.localStorage.getItem('user'))
@@ -53,7 +54,8 @@ class App extends React.Component {
         this.props.setHome()
         this.props.fetchUserPlaylists(user.token)
        this.props.fetchFeaturedPlaylists(user.token)
-       this.props.fetchSharedPlaylists()
+       
+       this.props.fetchSharedPlaylists(user.userId)
        this.props.history.push('/home')
         
     } else {
@@ -101,7 +103,7 @@ const mapDispatchToProps = (dispatch) => {
     setHome: () => dispatch(setHome()),
     fetchUserPlaylists: (token) => dispatch(fetchUserPlaylists(token)),
     fetchFeaturedPlaylists: (token) => dispatch(fetchFeaturedPlaylists(token)),
-    fetchSharedPlaylists: () => dispatch(fetchSharedPlaylists())
+    fetchSharedPlaylists: (userId) => dispatch(fetchSharedPlaylists(userId))
     
   }
 }

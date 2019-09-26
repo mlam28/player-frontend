@@ -4,7 +4,7 @@ import {withRouter} from 'react-router-dom'
 import {Link} from 'react-router-dom'
 import { Menu, Icon} from 'semantic-ui-react'
 import { Header, Button, Popup, Grid } from 'semantic-ui-react'
-import {setHome, setBrowse} from '../redux/userActions'
+import {setHome, setBrowse, makePlaylist} from '../redux/userActions'
 import {connect} from 'react-redux'
 
 
@@ -20,9 +20,18 @@ class NavBar extends React.Component{
   handleSubmit = () => {
     console.log('clicked')
 
+  
+    this.props.makePlaylist(this.state.playlistName)
+
     this.setState({
       playlistName: ''
     })
+
+  }
+
+  handleChange = (e) => {
+   
+    this.setState({playlistName: e.target.value})
   }
 
     render(){
@@ -42,16 +51,17 @@ class NavBar extends React.Component{
               <Menu.Header>Shared Playlists</Menu.Header>
                 <Menu.Menu>
                 <Menu.Item className='my-menu-item'>
-                          <Popup trigger={<p>New Playlist<Icon name='add' color='yellow'></Icon></p>} flowing hoverable>
+                          <Popup trigger={<p>New Playlist<Icon name='add' color='yellow'></Icon></p>} on='click'>
                               <Grid centered divided columns={1}>
                                 <Grid.Column textAlign='center'>
                                   <Header as='h4'>Playlist Name</Header>
-                                  <input></input>
+                                  <input name='playlistName' value={this.state.playlistName} onChange={this.handleChange}></input>
                                   <Button onClick={this.handleSubmit}>Submit</Button>
                                 </Grid.Column>
                               </Grid>
                         </Popup>
                 </Menu.Item>
+                {this.props.sharedPlaylists.length > 0 ? this.props.sharedPlaylists.map(playlist => <Menu.Item>{playlist.name}</Menu.Item>) : null}
                 </Menu.Menu>
               </Menu.Item>
           </Menu>
@@ -59,12 +69,18 @@ class NavBar extends React.Component{
     }
 }
 
+const mapStateToProps = (store) => {
+  return {
+    sharedPlaylists: store.sharedPlaylists
+  }
+}
 
 const mapDispatchToProps = (dispatch) => {
   return{
     setHome: () => dispatch(setHome()),
-    setBrowse: () => dispatch(setBrowse())
+    setBrowse: () => dispatch(setBrowse()),
+    makePlaylist: (name) => dispatch(makePlaylist(name))
   }
 }
 
-export default withRouter(connect(null, mapDispatchToProps)(NavBar))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NavBar))

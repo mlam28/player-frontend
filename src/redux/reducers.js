@@ -97,6 +97,8 @@ const sharedPlaylistsReducer = (state=[], action) => {
             return action.playlists
         case 'RESET':
             return []
+        case 'ADD':
+            return [...state, action.playlist]
         default:
             return state
     }

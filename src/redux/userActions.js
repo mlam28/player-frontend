@@ -76,10 +76,9 @@ function setSharedPlaylists(playlists){
 }
 
 
-function fetchSharedPlaylists(){
+function fetchSharedPlaylists(userId){
 
-    return function (dispatch, getState) {
-        const userId = getState().currentUser.userId
+    return function (dispatch) {
   
         fetch(`http://localhost:3000/users/${userId}`).then(resp => resp.json()).then(data => {console.log(data); dispatch(setSharedPlaylists(data))})
     }
@@ -113,8 +112,12 @@ function pauseMusic(){
 
 
 function makePlaylist(name){
+
+    return function(dispatch, getState){
+       const userId = getState().currentUser.userId
+       
     const data = {
-        playlist: {name: 'something'}
+        playlist: {name: name, user_ids:[userId]}
     }
     const obj = {
         method: 'POST',
@@ -124,7 +127,13 @@ function makePlaylist(name){
         body: JSON.stringify(data)
     }
 
-    fetch(`http://localhost:3000/playlists`, obj)
+    fetch(`http://localhost:3000/playlists`, obj).then(resp => resp.json()).then(data => {console.log(data); dispatch(addPlaylist(data))} )
+}
+}
+
+
+function addPlaylist(playlist){
+    return {type: 'ADD', playlist: playlist}
 }
 
 

@@ -135,6 +135,22 @@
 }
 
 
+#shared-song-container{
+  display: flex;
+    flex-wrap: wrap;
+    overflow: scroll;
+    max-height: 65em;
+    bottom: 0;
+
+}
+
+.my-fourths-column{
+  display: flex;
+  flex-direction: column;
+  width: 20%
+}
+
+
 
 /* Menu Styling */
 .my-menu-item i{

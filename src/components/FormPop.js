@@ -10,12 +10,12 @@ const StyledPop = styled.div`
 const NestedPop = styled.div`
 `
 
-const FormPop = () => (
+const FormPop = (props) => (
     <Popup pinned={true}  trigger={<Button><Icon name='hand spock'></Icon></Button>} flowing on='click'>
         <Popup.Content>
     <StyledPop>
         <Popup
-        flowing hoverable
+        flowing on='click'
           trigger={<div>Add to Playlist <Icon name='chevron right'></Icon></div>}
           position='top center'
           size='large'
@@ -25,7 +25,7 @@ const FormPop = () => (
           </Popup> 
     </StyledPop>
     <StyledPop>
-          <div>Go to Spotify Artist <Icon name='chevron right'></Icon></div>
+          <div><a href={props.artisturi}>Go to Spotify Artist <Icon name='chevron right'></Icon></a></div>
     </StyledPop>
           </Popup.Content>
      
