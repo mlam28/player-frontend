@@ -14,10 +14,10 @@ class HomePage extends React.Component{
     render(){
         return(
             <div> 
-                <h2>Your Shared Playlists</h2>
-                <CardContainer playlists={this.props.sharedPlaylists}/>
                 <h2>Your Personal Playlists</h2>
                 <CardContainer playlists={this.filterShared()}/>
+                <h2>Your Shared Playlists</h2>
+                <CardContainer playlists={this.props.sharedPlaylists}/>
             </div>
         )
 }

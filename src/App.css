@@ -147,9 +147,14 @@
 .my-fourths-column{
   display: flex;
   flex-direction: column;
-  width: 20%
+  width: 27%
 }
 
+.my-smaller-column{
+  display: flex;
+  flex-direction: column;
+  width: 5%
+}
 
 
 /* Menu Styling */

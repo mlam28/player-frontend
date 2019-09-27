@@ -12,6 +12,7 @@ import SongContainer from './containers/SongContainer'
 import BrowseContainer from './containers/BrowsePage'
 import SpotifyPlayer from 'react-spotify-web-playback';
 import styled from 'styled-components'
+import SharedSongContainer from './containers/SharedSongContainer';
 
 
 const StyledPlayer = styled.div` 
@@ -72,7 +73,7 @@ class App extends React.Component {
   render(){
     return (
       <div className="App"> 
-    {Object.keys(this.props.currentUser).length > 0 ? <><NavBar></NavBar><Header /><Route exact path='/home' render={() => <HomePage />}></Route><Route exact path='/browse' render={() => <BrowseContainer />}></Route><Route path='/playlist/:name' render={() => <SongContainer />}></Route></> : <Route path='/login' render={() => <LoginContainer />}></Route>
+    {Object.keys(this.props.currentUser).length > 0 ? <><NavBar></NavBar><Header /><Route exact path='/home' render={() => <HomePage />}></Route><Route exact path='/browse' render={() => <BrowseContainer />}></Route><Route path='/playlist/:name' render={() => <SongContainer />}></Route><Route path='/shared/:name' render={() => <SharedSongContainer />}></Route></> : <Route path='/login' render={() => <LoginContainer />}></Route>
     }
 
 

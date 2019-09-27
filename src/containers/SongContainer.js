@@ -35,7 +35,7 @@ class SongContainer extends React.Component{
                             <div className='my-column'>{song.name}</div>
                             <div className='my-column'>{song.artist}</div>
                             <div className='my-column'>{song.time}</div>
-                            <div className='add-column'><FormPop artisturi={song.artist_uri}/></div>
+                            <div className='add-column'><FormPop song={song} artisturi={song.artist_uri}/></div>
                         </div>
 
                     )

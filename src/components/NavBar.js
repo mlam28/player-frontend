@@ -4,7 +4,7 @@ import {withRouter} from 'react-router-dom'
 import {Link} from 'react-router-dom'
 import { Menu, Icon} from 'semantic-ui-react'
 import { Header, Button, Popup, Grid } from 'semantic-ui-react'
-import {setHome, setBrowse, makePlaylist} from '../redux/userActions'
+import {setHome, setBrowse, makePlaylist, setQueueTracks} from '../redux/userActions'
 import {connect} from 'react-redux'
 
 
@@ -34,6 +34,13 @@ class NavBar extends React.Component{
     this.setState({playlistName: e.target.value})
   }
 
+  handlePlaylistClick = (e, playlist) => {
+    debugger
+    console.log('clicked')
+    this.props.setQueueTracks(playlist.songs)
+    this.props.history.push('/shared/' + playlist.name)
+  }
+
     render(){
         return(
             <Menu inverted pointing vertical id='nav-bar'>
@@ -61,7 +68,7 @@ class NavBar extends React.Component{
                               </Grid>
                         </Popup>
                 </Menu.Item>
-                {this.props.sharedPlaylists.length > 0 ? this.props.sharedPlaylists.map(playlist => <Menu.Item>{playlist.name}</Menu.Item>) : null}
+                {this.props.sharedPlaylists.length > 0 ? this.props.sharedPlaylists.map(playlist => <Menu.Item onClick={(e) => this.handlePlaylistClick(e, playlist)}>{playlist.name}</Menu.Item>) : null}
                 </Menu.Menu>
               </Menu.Item>
           </Menu>
@@ -79,7 +86,8 @@ const mapDispatchToProps = (dispatch) => {
   return{
     setHome: () => dispatch(setHome()),
     setBrowse: () => dispatch(setBrowse()),
-    makePlaylist: (name) => dispatch(makePlaylist(name))
+    makePlaylist: (name) => dispatch(makePlaylist(name)),
+    setQueueTracks: (tracks) => dispatch(setQueueTracks(tracks))
   }
 }
 

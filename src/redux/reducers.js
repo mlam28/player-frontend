@@ -99,6 +99,18 @@ const sharedPlaylistsReducer = (state=[], action) => {
             return []
         case 'ADD':
             return [...state, action.playlist]
+        case 'ADD-SONG':
+          const newCopy = state.map(playlist => {
+              
+              if (playlist.id === action.id) {
+                  const copySongs = [...playlist.songs, action.song]
+                 playlist.songs = copySongs
+                 return playlist
+              } else {
+                  return playlist
+              }
+          })
+          return newCopy
         default:
             return state
     }

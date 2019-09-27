@@ -63,7 +63,7 @@ function setCurrentTracks(tracks) {
 function fetchPlaylistTracks(token, playlistId){
     spotifyApi.setAccessToken(token)
     return function (dispatch){
-        spotifyApi.getPlaylistTracks(playlistId).then(resp => {console.log(resp); const tracks = resp.items.map(item => Object.assign({}, {name: item.track.name, artist: item.track.artists[0].name, artist_uri: item.track.artists[0].uri, uri: item.track.uri, time: formatDuration(item.track.duration_ms)}))
+        spotifyApi.getPlaylistTracks(playlistId).then(resp => {console.log(resp); debugger; const tracks = resp.items.map(item => {debugger; return Object.assign({}, {name: item.track ? item.track.name : '', artist: item.track ? item.track.artists[0].name : '', artist_uri: item.track ? item.track.artists[0].uri : '', uri: item.track ? item.track.uri : '', time: item.track ? formatDuration(item.track.duration_ms) : ''})})
         dispatch(setQueueTracks(tracks));
         
         })
@@ -137,6 +137,33 @@ function addPlaylist(playlist){
 }
 
 
+function addSong(e, song, playlist_id){
+    console.log('hello')
+    debugger
+    return function(dispatch){
+        const data = {
+            song_playlist: {name: song.name, uri: song.uri, time: song.time, artist_uri: song.artist_uri, playlist_id: playlist_id, artist: song.artist}
+        }
+        const obj = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }
+        fetch('http://localhost:3000/song_playlists', obj).then(resp => resp.json()).then(song => {console.log(song); dispatch(findPlaylistAddSong(song))})
+    }
+}
+
+
+
+
+
+function findPlaylistAddSong(playlistSong) {
+    return {
+        type: 'ADD-SONG', id: playlistSong.playlist_id, song: playlistSong.song
+    }
+}
 
 
 
@@ -144,5 +171,4 @@ function addPlaylist(playlist){
 
 
 
-
-export {setUser, logoutUser, setToken, setHome, setBrowse, fetchUserPlaylists, logoutUserFromStorage, fetchPlaylistTracks, setPlaylistPage, setCurrentTracks, setQueueTracks, setPlayPosition, fetchFeaturedPlaylists, fetchSharedPlaylists, playMusic, pauseMusic, makePlaylist}
+export {setUser, logoutUser, setToken, setHome, setBrowse, fetchUserPlaylists, logoutUserFromStorage, fetchPlaylistTracks, setPlaylistPage, setCurrentTracks, setQueueTracks, setPlayPosition, fetchFeaturedPlaylists, fetchSharedPlaylists, playMusic, pauseMusic, makePlaylist, addSong}

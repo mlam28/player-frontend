@@ -9,12 +9,13 @@ const PlaylistCard = ({currentUser, playlist, setPlaylistPage, fetchPlaylistTrac
     
    const handlePlaylistClick = () => {
        setPlaylistPage(playlist.name)
-      
-       history.push('/playlist/' + playlist.name)
+        
        if (playlist.songs){
+           history.push('/shared/' + playlist.name)
            setQueueTracks(playlist.songs)
-       } else {
-       fetchPlaylistTracks(currentUser.token, playlist.id)
+        } else {
+            history.push('/playlist/' + playlist.name)
+            fetchPlaylistTracks(currentUser.token, playlist.id)
        }
     }
     
