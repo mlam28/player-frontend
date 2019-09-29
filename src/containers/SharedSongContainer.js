@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Icon, Button} from 'semantic-ui-react'
-import {setCurrentTracks, setPlayPosition, playMusic} from '../redux/userActions'
+import {setCurrentTracks, setPlayPosition, playMusic, fetchAddLike} from '../redux/userActions'
 import FormPop from '../components/FormPop'
 import SharedPop from '../components/SharedPop'
 
@@ -33,7 +33,7 @@ class SharedSongContainer extends React.Component{
                             <div className='my-fourths-column'>{song.artist}</div>
                             <div className='my-fourths-column'>{song.time}</div>
                             <div className='my-smaller-column'><SharedPop artisturi={song.artist_uri}/></div>
-                            <div className='my-smaller-column'><Button><Icon name='thumbs up outline'></Icon></Button></div>
+                            <div className='my-smaller-column'><Button onClick={(e) => this.props.fetchAddLike(e, song.id)}><Icon name='thumbs up outline'></Icon></Button><div></div>{song.likes.length}</div>
                             <div className='my-smaller-column'><Button><Icon name='thumbs down outline'></Icon></Button></div>
                         </div>
 
@@ -50,7 +50,8 @@ class SharedSongContainer extends React.Component{
 const mapStateToProps = (store) => {
     return {
     currentTracks: store.currentTracks,
-    queueTracks: store.queueTracks
+    queueTracks: store.queueTracks,
+    currentUser: store.currentUser
     }
 }
 
@@ -59,7 +60,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setCurrentTracks: (tracks) => dispatch(setCurrentTracks(tracks)),
         setPlayPosition: (num) => dispatch(setPlayPosition(num)),
-        playMusic: () => dispatch(playMusic())
+        playMusic: () => dispatch(playMusic()),
+        fetchAddLike: (e, song_id) => dispatch(fetchAddLike(e, song_id))
     }
 }
 

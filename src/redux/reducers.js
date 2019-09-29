@@ -62,6 +62,15 @@ const queueReducer = (state=[], action) => {
             return action.tracks
         case 'CLEAR-QUEUE':
             return []
+        case 'ADD-LIKE-QUEUE':
+              let newQueue = state.map(track => {
+                  if (track.id === action.song.id){
+                      return action.song
+                  } else {
+                      return track
+                  }
+              })
+              return newQueue
         default:
             return state
     }
@@ -111,6 +120,26 @@ const sharedPlaylistsReducer = (state=[], action) => {
               }
           })
           return newCopy
+          case 'ADD-LIKE':
+              const likeCopy = state.map(playlist => {
+                  if (playlist.id === action.song.playlist_id){
+                     let newSongs = playlist.songs.map(song => {
+                         
+                          if(song.id === action.song.id){
+                              return action.song
+                              
+                          } else {
+                              return song
+                          }
+                      })
+                      playlist.songs = newSongs
+                      return playlist
+                  } else {
+                      return playlist
+                  }
+              })
+              
+              return likeCopy
         default:
             return state
     }

@@ -6,6 +6,7 @@ import CardContainer from './CardContainer'
 
 
 
+
 class BrowseContainer extends React.Component{
     
     render(){

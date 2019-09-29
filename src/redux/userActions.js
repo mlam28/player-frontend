@@ -139,7 +139,7 @@ function addPlaylist(playlist){
 
 function addSong(e, song, playlist_id){
     console.log('hello')
-    debugger
+
     return function(dispatch){
         const data = {
             song_playlist: {name: song.name, uri: song.uri, time: song.time, artist_uri: song.artist_uri, playlist_id: playlist_id, artist: song.artist}
@@ -165,10 +165,36 @@ function findPlaylistAddSong(playlistSong) {
     }
 }
 
+function addLike(song){
+    return{type: 'ADD-LIKE', song: song}
+}
+
+function addLikeQueue(song){
+    return {type: 'ADD-LIKE-QUEUE', song: song}
+}
+
+function fetchAddLike(e, song_id){
+    debugger
+    return function(dispatch, getState){
+        debugger
+        const userId = getState().currentUser.userId
+        const data ={ 
+            like: {song_playlist_id: song_id, user_id: userId, liked: true}
+        }
+        const obj ={
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }
+        fetch('http://localhost:3000/likes', obj).then(resp => resp.json()).then(song => {console.log(song); dispatch(addLike(song)); dispatch(addLikeQueue(song))})
+    }
+}
 
 
 
 
 
 
-export {setUser, logoutUser, setToken, setHome, setBrowse, fetchUserPlaylists, logoutUserFromStorage, fetchPlaylistTracks, setPlaylistPage, setCurrentTracks, setQueueTracks, setPlayPosition, fetchFeaturedPlaylists, fetchSharedPlaylists, playMusic, pauseMusic, makePlaylist, addSong}
+export {setUser, logoutUser, setToken, setHome, setBrowse, fetchUserPlaylists, logoutUserFromStorage, fetchPlaylistTracks, setPlaylistPage, setCurrentTracks, setQueueTracks, setPlayPosition, fetchFeaturedPlaylists, fetchSharedPlaylists, playMusic, pauseMusic, makePlaylist, addSong, fetchAddLike}
