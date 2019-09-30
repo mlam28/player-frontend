@@ -3,15 +3,17 @@ import { Card, Icon, Image } from 'semantic-ui-react'
 import {connect} from 'react-redux'
 import {setPlaylistPage, fetchPlaylistTracks, setCurrentTracks, setQueueTracks, playMusic, pauseMusic} from '../redux/userActions'
 import {withRouter} from 'react-router-dom'
+import {copying} from '../redux/userActions'
 
 
-const PlaylistCard = ({currentUser, playlist, setPlaylistPage, fetchPlaylistTracks, history, setCurrentTracks, setQueueTracks, playMusic, pauseMusic}) => {
+const PlaylistCard = ({currentUser, playlist, setPlaylistPage, fetchPlaylistTracks, history, setCurrentTracks, setQueueTracks, playMusic, pauseMusic, copying}) => {
     
    const handlePlaylistClick = () => {
        setPlaylistPage(playlist.name)
         
        if (playlist.songs){
-           history.push('/shared/' + playlist.name)
+           copying(playlist.id)
+           history.push('/shared/' + playlist.name + '#' + playlist.playlist_uri)
            setQueueTracks(playlist.songs)
         } else {
             history.push('/playlist/' + playlist.name)
@@ -56,7 +58,8 @@ const mapDispatchToProps = (dispatch) => {
         setCurrentTracks: (tracks) => dispatch(setCurrentTracks(tracks)),
         setQueueTracks: (tracks) => dispatch(setQueueTracks(tracks)),
         playMusic: () => dispatch(playMusic()),
-        pauseMusic: () => dispatch(pauseMusic())
+        pauseMusic: () => dispatch(pauseMusic()),
+        copying: (playlistId) => dispatch(copying(playlistId))
     }
 }
 

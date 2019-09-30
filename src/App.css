@@ -147,7 +147,7 @@
 .my-fourths-column{
   display: flex;
   flex-direction: column;
-  width: 27%
+  width: 30%
 }
 
 .my-smaller-column{

@@ -63,7 +63,7 @@ function setCurrentTracks(tracks) {
 function fetchPlaylistTracks(token, playlistId){
     spotifyApi.setAccessToken(token)
     return function (dispatch){
-        spotifyApi.getPlaylistTracks(playlistId).then(resp => {console.log(resp); debugger; const tracks = resp.items.map(item => {debugger; return Object.assign({}, {name: item.track ? item.track.name : '', artist: item.track ? item.track.artists[0].name : '', artist_uri: item.track ? item.track.artists[0].uri : '', uri: item.track ? item.track.uri : '', time: item.track ? formatDuration(item.track.duration_ms) : ''})})
+        spotifyApi.getPlaylistTracks(playlistId).then(resp => {console.log(resp); const tracks = resp.items.map(item => { return Object.assign({}, {name: item.track ? item.track.name : '', artist: item.track ? item.track.artists[0].name : '', artist_uri: item.track ? item.track.artists[0].uri : '', uri: item.track ? item.track.uri : '', time: item.track ? formatDuration(item.track.duration_ms) : ''})})
         dispatch(setQueueTracks(tracks));
         
         })
@@ -174,9 +174,9 @@ function addLikeQueue(song){
 }
 
 function fetchAddLike(e, song_id){
-    debugger
+
     return function(dispatch, getState){
-        debugger
+
         const userId = getState().currentUser.userId
         const data ={ 
             like: {song_playlist_id: song_id, user_id: userId, liked: true}
@@ -192,9 +192,129 @@ function fetchAddLike(e, song_id){
     }
 }
 
+function spotifySearch(input){
+    debugger
+    return function(dispatch, getState){
+        let token = getState().currentUser.token
+        debugger
+        spotifyApi.setAccessToken(token)
+        spotifyApi.search(input, ['track', 'album', 'artist']).then(resp => console.log(resp))
+    }
+}
+
+function deleteSong(songPlaylistId){
+    return function(dispatch, getState){
+        let userId = getState().currentUser.id
+        let data = {}
+        let obj = {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+           },
+           
+        }
+
+        fetch(`http://localhost:3000/song_playlists/${songPlaylistId}`, obj).then(resp => resp.json()).then(data => {console.log(data); dispatch(deleteSongFromQueue(data)); dispatch(deleteSongFromPlaylist(data))})
+    }
+}
+
+function deleteSongFromQueue(data){
+    return {type: 'DELETE-SONG-QUEUE', songId: data.songId}
+}
+
+function deleteSongFromPlaylist(data){
+    return {type: 'DELETE-SONG-FROM-PLAYLIST', songId: data.songId, playlistId: data.playlistId}
+}
+
+
+// function copyToSpotify(name){
+
+//     return function(dispatch, getState){
+//         let token = getState().currentUser.token
+//         let spotifyId = getState().currentUser.spotifyId
+//         debugger
+//         let obj = {
+//             method: 'POST',
+//             headers: {
+//                 "Authorization": `Bearer ${token}`,
+//                 "Content-Type": 'application/json'
+//             },
+//             body: JSON.stringify({name: name})
+//         }
+
+//         spotifyApi.setAccessToken(token)
+//         spotifyApi.createPlaylist(spotifyId, JSON.stringify({name: 'New Playlist'})).then(resp => {console.log(resp); dispatch(updateUriData())})
+//     }
+// }
 
 
 
+// fetch(`https://api.spotify.com/v1/users/${spotifyId}/playlists`, obj).then(resp => console.log(resp))
+
+// function updateUriData(){
+//     return function(dispatch, getState){
+//         let userId = getState().currentUser.userId
+//         let playlistId = getState().copying
+//         let data = {userId: userId, playlistId: playlistId}
+//         let obj = {
+//             method: 'PUT',
+//             headers: {
+//                 "Content-Type": 'application/json'
+//             },
+//             body: JSON.stringify(data)
+//         }
+//         fetch(`http://localhost:3000/user_playlists`, obj).then(resp => resp.json()).then(data => console.log(data))
+//     }
+// }
+
+function downToSpotify(name){
+    debugger
+    return function(dispatch, getState){
+        let userId = getState().currentUser.userId
+        let tracks = getState().queueTracks.map(track => track.uri)
+        let playlistId = getState().copying
+        let obj = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({userId: userId, playlistId: playlistId, name: name, tracks: tracks})
+        }
+        fetch('http://localhost:3000/copytospotify', obj).then(resp => resp.json()).then(data => {console.log(data); 
+        if(data.message){
+            alert(data.message)
+        }
+    })
+    }
+}
+
+function copying(playlistId){
+    return {type: 'COPYING', playlistId: playlistId}
+}
+
+function updateToSpotify(){
+    debugger
+    return function(dispatch, getState){
+        let userId = getState().currentUser.userId
+        let tracks = getState().queueTracks.map(track => track.uri)
+        let playlistId = getState().copying
+        debugger
+        let obj = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({userId: userId, playlistId: playlistId,  tracks: tracks})
+        }
+        fetch('http://localhost:3000/updatespotify', obj).then(resp => resp.json()).then(data => {console.log(data); 
+        if (data.message){
+            alert(data.message)
+        }
+    })
 
 
-export {setUser, logoutUser, setToken, setHome, setBrowse, fetchUserPlaylists, logoutUserFromStorage, fetchPlaylistTracks, setPlaylistPage, setCurrentTracks, setQueueTracks, setPlayPosition, fetchFeaturedPlaylists, fetchSharedPlaylists, playMusic, pauseMusic, makePlaylist, addSong, fetchAddLike}
+    }
+}
+
+
+export {setUser, logoutUser, setToken, setHome, setBrowse, fetchUserPlaylists, logoutUserFromStorage, fetchPlaylistTracks, setPlaylistPage, setCurrentTracks, setQueueTracks, setPlayPosition, fetchFeaturedPlaylists, fetchSharedPlaylists, playMusic, pauseMusic, makePlaylist, addSong, fetchAddLike, spotifySearch, deleteSong, copying, downToSpotify, updateToSpotify}

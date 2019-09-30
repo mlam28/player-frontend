@@ -41,11 +41,12 @@ class App extends React.Component {
   componentDidMount(){
     if (window.location.hash.includes('display_name')){
     let hash = getUrlParams(window.location.hash.slice(1))
-    this.props.setUser(hash)
+    this.props.setUser({token: hash.token, userId: hash.id, spotifyId: hash.spotify_id, spotify_uri: hash.spotify_uri})
     this.props.setToken(hash.token)
     this.props.setHome()
-    window.localStorage.setItem('user', JSON.stringify({token: hash.token, userId: hash.id, spotifyId: hash.spotify_id, spotify_uri: hash.spotify_uri}))
    
+    window.localStorage.setItem('user', JSON.stringify({token: hash.token, userId: hash.id, spotifyId: hash.spotify_id, spotify_uri: hash.spotify_uri}))
+
     this.props.fetchUserPlaylists(hash.token)
     
     this.props.fetchSharedPlaylists(hash.id)
