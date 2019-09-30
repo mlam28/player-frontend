@@ -3,7 +3,7 @@ import {NavLink} from 'react-router-dom'
 import {withRouter} from 'react-router-dom'
 import { Menu, Icon} from 'semantic-ui-react'
 import { Header, Button, Popup, Grid } from 'semantic-ui-react'
-import {setHome, setBrowse, makePlaylist, setQueueTracks, setPlaylistPage, copying} from '../redux/userActions'
+import {setHome, setBrowse, makePlaylist, setQueueTracks, setPlaylistPage, copying, fetchPlaylistMembers} from '../redux/userActions'
 import {connect} from 'react-redux'
 
 
@@ -39,6 +39,7 @@ class NavBar extends React.Component{
     this.props.setQueueTracks(playlist.songs)
     this.props.setPlaylistPage(playlist.name)
     this.props.copying(playlist.id)
+    this.props.fetchPlaylistMembers()
     this.props.history.push('/shared/' + playlist.name + '#' + playlist.playlist_uri)
   }
 
@@ -90,7 +91,8 @@ const mapDispatchToProps = (dispatch) => {
     makePlaylist: (name) => dispatch(makePlaylist(name)),
     setQueueTracks: (tracks) => dispatch(setQueueTracks(tracks)),
     setPlaylistPage: (name) => dispatch(setPlaylistPage(name)),
-    copying: (playlistId) => dispatch(copying(playlistId))
+    copying: (playlistId) => dispatch(copying(playlistId)),
+    fetchPlaylistMembers: () => dispatch(fetchPlaylistMembers())
   }
 }
 

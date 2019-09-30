@@ -190,6 +190,17 @@ const copyingReducer = (state='', action) => {
     }
 }
 
+const playlistUsersReducers = (state=[], action) => {
+    switch(action.type){
+        case 'SET-USERS': 
+            return action.users
+        case 'CLEAR':
+            return []
+        default:
+            return state
+    }
+}
+
 const rootReducer = combineReducers({
     currentUser: userReducer,
     token: tokenReducer,
@@ -202,7 +213,8 @@ const rootReducer = combineReducers({
     sharedPlaylists: sharedPlaylistsReducer,
     play: playReducer,
     searchTracks: searchTracksReducer,
-    copying: copyingReducer
+    copying: copyingReducer,
+    playlistUsers: playlistUsersReducers
 })
 
 

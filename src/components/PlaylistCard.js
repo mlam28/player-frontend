@@ -1,23 +1,25 @@
 import React from 'react'
 import { Card, Icon, Image } from 'semantic-ui-react'
 import {connect} from 'react-redux'
-import {setPlaylistPage, fetchPlaylistTracks, setCurrentTracks, setQueueTracks, playMusic, pauseMusic} from '../redux/userActions'
+import {setPlaylistPage, fetchPlaylistTracks, setCurrentTracks, setQueueTracks, playMusic, pauseMusic, fetchPlaylistMembers} from '../redux/userActions'
 import {withRouter} from 'react-router-dom'
-import {copying} from '../redux/userActions'
+import {copying, clearPUsers} from '../redux/userActions'
 
 
-const PlaylistCard = ({currentUser, playlist, setPlaylistPage, fetchPlaylistTracks, history, setCurrentTracks, setQueueTracks, playMusic, pauseMusic, copying}) => {
+const PlaylistCard = ({currentUser, playlist, setPlaylistPage, fetchPlaylistTracks, history, setCurrentTracks, setQueueTracks, playMusic, pauseMusic, copying, clearPUsers, fetchPlaylistMembers}) => {
     
    const handlePlaylistClick = () => {
        setPlaylistPage(playlist.name)
         
        if (playlist.songs){
            copying(playlist.id)
+           fetchPlaylistMembers()
            history.push('/shared/' + playlist.name + '#' + playlist.playlist_uri)
            setQueueTracks(playlist.songs)
         } else {
             history.push('/playlist/' + playlist.name)
             fetchPlaylistTracks(currentUser.token, playlist.id)
+            clearPUsers()
        }
     }
     
@@ -59,7 +61,9 @@ const mapDispatchToProps = (dispatch) => {
         setQueueTracks: (tracks) => dispatch(setQueueTracks(tracks)),
         playMusic: () => dispatch(playMusic()),
         pauseMusic: () => dispatch(pauseMusic()),
-        copying: (playlistId) => dispatch(copying(playlistId))
+        copying: (playlistId) => dispatch(copying(playlistId)),
+        clearPUsers: () => dispatch(clearPUsers()),
+        fetchPlaylistMembers: () => dispatch(fetchPlaylistMembers())
     }
 }
 

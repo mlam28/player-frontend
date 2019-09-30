@@ -317,4 +317,44 @@ function updateToSpotify(){
 }
 
 
-export {setUser, logoutUser, setToken, setHome, setBrowse, fetchUserPlaylists, logoutUserFromStorage, fetchPlaylistTracks, setPlaylistPage, setCurrentTracks, setQueueTracks, setPlayPosition, fetchFeaturedPlaylists, fetchSharedPlaylists, playMusic, pauseMusic, makePlaylist, addSong, fetchAddLike, spotifySearch, deleteSong, copying, downToSpotify, updateToSpotify}
+function addUserToPlaylist(uri){
+    return function(dispatch, getState){
+        let userId = getState().currentUser.userId
+        let playlistId = getState().copying
+        debugger
+        let data = { user_playlist: {user_id: userId, playlist_id: playlistId, add_uri: uri}}
+        let obj = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }
+
+        fetch('http://localhost:3000/user_playlists', obj).then(resp => resp.json()).then(data => {console.log(data); 
+        if(data.message){
+            alert(data.message)
+        }
+    })
+    }
+}
+
+function fetchPlaylistMembers(){
+    debugger
+    return function(dispatch, getState){
+        let userId = getState().currentUser.userId
+        let playlistId = getState().copying
+        debugger
+        fetch(`http://localhost:3000/playlists/${playlistId}/${userId}`).then(resp => resp.json()).then(data => {console.log(data); dispatch(setUsers(data))})
+    }
+}
+
+function setUsers(users){
+    return {type: 'SET-USERS', users: users}
+}
+
+function clearPUsers(){
+    return{type: 'CLEAR'}
+}
+
+export {setUser, logoutUser, setToken, setHome, setBrowse, fetchUserPlaylists, logoutUserFromStorage, fetchPlaylistTracks, setPlaylistPage, setCurrentTracks, setQueueTracks, setPlayPosition, fetchFeaturedPlaylists, fetchSharedPlaylists, playMusic, pauseMusic, makePlaylist, addSong, fetchAddLike, spotifySearch, deleteSong, copying, downToSpotify, updateToSpotify, addUserToPlaylist, fetchPlaylistMembers, clearPUsers}
