@@ -181,6 +181,15 @@ const searchTracksReducer = (state=[], action) => {
     }
 }
 
+const searchAlbumsReducer = (state = [], action) => {
+    switch(action.type){
+        case 'SET-SEARCHED-ALBUMS':
+            return action.albums 
+        default:
+            return state
+    }
+}
+
 const copyingReducer = (state='', action) => {
     switch(action.type){
         case 'COPYING':
@@ -213,6 +222,7 @@ const rootReducer = combineReducers({
     sharedPlaylists: sharedPlaylistsReducer,
     play: playReducer,
     searchTracks: searchTracksReducer,
+    searchAlbums: searchAlbumsReducer,
     copying: copyingReducer,
     playlistUsers: playlistUsersReducers
 })

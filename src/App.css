@@ -1,5 +1,15 @@
 .App {
   text-align: center;
+  display: flex;
+}
+
+#nav-bar-column{
+  width: 16%;
+
+}
+
+#stuff-large-column{
+  width: 85%
 }
 
 .App-logo {
@@ -7,6 +17,7 @@
   height: 40vmin;
   pointer-events: none;
 }
+
 
 .App-header {
   background-color: #282c34;
@@ -35,22 +46,22 @@
 #nav-bar{
   display: inline-flex;
   float: left;
-  max-width: 14%
+  max-width: 15%;
+  position: fixed;
+  left: 0;
+  height: 90em
 }
 
 #header {
   height: 20em
 }
 
-#menu-playlists-container {
-  height: 90em;
-}
+
 
 .card-container{
   flex-direction: row;
   display: flex;
   flex-flow: row;
-  justify-content: space-between;
   overflow-x: scroll;
   
   height: 31em;
@@ -68,6 +79,11 @@
   margin: 1em 2em;
 }
 
+.search-card{
+  flex-direction: row !important;
+  height: 38px !important;
+}
+
 .ui.card{
   margin: 1em 2em;
 }
@@ -77,9 +93,30 @@
 }
 
 
+#search-tracks{
+  display: flex;
+  flex-flow: row;
+  flex-wrap: wrap;
+}
+
+
 
 .ui.card:first-child {
   margin-top: 1em !important;
+}
+
+
+.meta{
+  padding-top: 20px  !important;
+    float: left !important;
+    position: absolute !important;
+    margin-left: 40px !important;
+}
+
+.search-header{
+    margin: 0 !important;
+    padding-bottom: 0 !important;
+    display: inline !important;
 }
 
 
@@ -181,7 +218,7 @@
   float: left !important;
   margin-top: 12em !important;
   position: absolute;
-  left: 17em;
+  left: 25em;
   min-width: fit-content;
   flex-wrap: wrap;
 }
@@ -207,10 +244,29 @@
   padding-right: 7px;
 }
 
+#profile-img{
+  border-radius: 50%;
+  display: inline-flex;
+  margin-right: 6px
+}
+
+#display-name{
+  padding-top: 10px;
+  margin-right: 11px;
+  display: inline-flex;
+}
+
+
 
 /* padding-top: 20px;
     margin-right: 1500px;
     width: 200px; */
 
 
+    /* search bar styling */
 
+
+#search-input{
+  max-width: 100%;
+  margin-left: 25px;
+}

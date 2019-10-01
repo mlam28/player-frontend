@@ -31,7 +31,7 @@ class SongContainer extends React.Component{
                 {this.props.queueTracks.map((song, index) => {
                     return(
                         <div className='my-row' key={song.uri}>
-                            <div className='my-small-column'><Icon name='play'  onClick={(e) => this.handleClick(e, index)}></Icon></div>
+                            <div className='my-small-column'><Icon size='large' name='play circle outline'  onClick={(e) => this.handleClick(e, index)}></Icon></div>
                             <div className='my-column'>{song.name}</div>
                             <div className='my-column'>{song.artist}</div>
                             <div className='my-column'>{song.time}</div>

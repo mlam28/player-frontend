@@ -196,9 +196,23 @@ function spotifySearch(input){
     debugger
     return function(dispatch, getState){
         let token = getState().currentUser.token
-        debugger
+        
         spotifyApi.setAccessToken(token)
-        spotifyApi.search(input, ['track', 'album', 'artist']).then(resp => console.log(resp))
+        spotifyApi.search(input, ['track', 'album', 'artist']).then(resp => {console.log(resp); 
+        let tracks = resp.tracks.items.map(item => {
+          return  Object.assign({}, {image: item.album.images[2].url, name: item.name, artist: item.artists[0].name, artist_uri: item.artists[0].uri, song_uri: item.uri})
+        })
+
+        let albums = resp.albums.items.map(item => {
+           return Object.assign({}, {
+                name: item.name, image: item.images[2].url, artist: item.artists[0].name, artist_uri: item.artists[0].uri, album_uri: item.uri
+            })
+        })
+
+        dispatch(setSearchTracks(tracks));
+        dispatch(setSearchAlbums(albums))
+        
+        } )
     }
 }
 
@@ -226,46 +240,6 @@ function deleteSongFromPlaylist(data){
     return {type: 'DELETE-SONG-FROM-PLAYLIST', songId: data.songId, playlistId: data.playlistId}
 }
 
-
-// function copyToSpotify(name){
-
-//     return function(dispatch, getState){
-//         let token = getState().currentUser.token
-//         let spotifyId = getState().currentUser.spotifyId
-//         debugger
-//         let obj = {
-//             method: 'POST',
-//             headers: {
-//                 "Authorization": `Bearer ${token}`,
-//                 "Content-Type": 'application/json'
-//             },
-//             body: JSON.stringify({name: name})
-//         }
-
-//         spotifyApi.setAccessToken(token)
-//         spotifyApi.createPlaylist(spotifyId, JSON.stringify({name: 'New Playlist'})).then(resp => {console.log(resp); dispatch(updateUriData())})
-//     }
-// }
-
-
-
-// fetch(`https://api.spotify.com/v1/users/${spotifyId}/playlists`, obj).then(resp => console.log(resp))
-
-// function updateUriData(){
-//     return function(dispatch, getState){
-//         let userId = getState().currentUser.userId
-//         let playlistId = getState().copying
-//         let data = {userId: userId, playlistId: playlistId}
-//         let obj = {
-//             method: 'PUT',
-//             headers: {
-//                 "Content-Type": 'application/json'
-//             },
-//             body: JSON.stringify(data)
-//         }
-//         fetch(`http://localhost:3000/user_playlists`, obj).then(resp => resp.json()).then(data => console.log(data))
-//     }
-// }
 
 function downToSpotify(name){
     debugger
@@ -355,6 +329,15 @@ function setUsers(users){
 
 function clearPUsers(){
     return{type: 'CLEAR'}
+}
+
+
+function setSearchTracks(results){
+    return {type: 'SET-SEARCHED-TRACKS', tracks: results}
+}
+
+function setSearchAlbums(results){
+    return {type: 'SET-SEARCHED-ALBUMS', albums: results}
 }
 
 export {setUser, logoutUser, setToken, setHome, setBrowse, fetchUserPlaylists, logoutUserFromStorage, fetchPlaylistTracks, setPlaylistPage, setCurrentTracks, setQueueTracks, setPlayPosition, fetchFeaturedPlaylists, fetchSharedPlaylists, playMusic, pauseMusic, makePlaylist, addSong, fetchAddLike, spotifySearch, deleteSong, copying, downToSpotify, updateToSpotify, addUserToPlaylist, fetchPlaylistMembers, clearPUsers}

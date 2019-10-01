@@ -46,6 +46,9 @@ class NavBar extends React.Component{
     render(){
         return(
             <Menu inverted pointing vertical fluid size='large' id='nav-bar'>
+             <Menu.Item>
+                <img id='profile-img' src={this.props.currentUser.image}></img><p id='display-name'>{this.props.currentUser.display_name}</p>
+              </Menu.Item>
             <NavLink to='/home'><Menu.Item
               name='home'
               active={this.props.page === 'Home'}
@@ -70,9 +73,10 @@ class NavBar extends React.Component{
                               </Grid>
                         </Popup>
                 </Menu.Item>
-                {this.props.sharedPlaylists.length > 0 ? this.props.sharedPlaylists.map(playlist => <Menu.Item onClick={(e) => this.handlePlaylistClick(e, playlist)}>{playlist.name}</Menu.Item>) : null}
+                {this.props.sharedPlaylists.length > 0 ? this.props.sharedPlaylists.map(playlist => <Menu.Item active={this.props.page === playlist.name}onClick={(e) => this.handlePlaylistClick(e, playlist)}>{playlist.name}</Menu.Item>) : null}
                 </Menu.Menu>
               </Menu.Item>
+              <Menu.Item hover>Logout</Menu.Item>
           </Menu>
         )
     }
@@ -81,7 +85,8 @@ class NavBar extends React.Component{
 const mapStateToProps = (store) => {
   return {
     sharedPlaylists: store.sharedPlaylists,
-    page: store.page
+    page: store.page,
+    currentUser: store.currentUser
   }
 }
 

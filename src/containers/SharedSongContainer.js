@@ -36,7 +36,7 @@ class SharedSongContainer extends React.Component{
                 {this.props.queueTracks.map((song, index) => {
                     return(
                         <div className='my-row' key={song.uri}>
-                            <div className='my-smaller-column'><Icon name='play'  onClick={(e) => this.handleClick(e, index)}></Icon></div>
+                            <div className='my-smaller-column'><Icon name='play circle outline'  size='large' color='blue' onClick={(e) => this.handleClick(e, index)}></Icon></div>
                             <div className='my-fourths-column'>{song.name}</div>
                             <div className='my-fourths-column'>{song.artist}</div>
                             <div className='my-small-column'>{song.time}</div>

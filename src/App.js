@@ -40,12 +40,15 @@ class App extends React.Component {
 
   componentDidMount(){
     if (window.location.hash.includes('display_name')){
-    let hash = getUrlParams(window.location.hash.slice(1))
-    this.props.setUser({token: hash.token, userId: hash.id, spotifyId: hash.spotify_id, spotify_uri: hash.spotify_uri})
+      let hash = getUrlParams(window.location.hash.slice(1))
+
+      const formattedName = hash.display_name.split('+').join(' ')
+
+    this.props.setUser({display_name: formattedName, token: hash.token, userId: hash.id, spotifyId: hash.spotify_id, spotify_uri: hash.spotify_uri, image: hash.image})
     this.props.setToken(hash.token)
     this.props.setHome()
    
-    window.localStorage.setItem('user', JSON.stringify({token: hash.token, userId: hash.id, spotifyId: hash.spotify_id, spotify_uri: hash.spotify_uri}))
+    window.localStorage.setItem('user', JSON.stringify({display_name: formattedName, token: hash.token, userId: hash.id, spotifyId: hash.spotify_id, spotify_uri: hash.spotify_uri, image: hash.image}))
 
     this.props.fetchUserPlaylists(hash.token)
     this.props.fetchFeaturedPlaylists(hash.token)
@@ -75,11 +78,11 @@ class App extends React.Component {
   render(){
     return (
       <div className="App"> 
-    {Object.keys(this.props.currentUser).length > 0 ? <><NavBar></NavBar><Header /><SearchBar /><Route exact path='/home' render={() => <HomePage />}></Route><Route exact path='/browse' render={() => <BrowseContainer />}></Route><Route path='/playlist/:name' render={() => <SongContainer />}></Route><Route path='/shared/:name' render={() => <SharedSongContainer />}></Route></> : <Route path='/login' render={() => <LoginContainer />}></Route>
+    {Object.keys(this.props.currentUser).length > 0 ? <><div id='nav-bar-column'><NavBar></NavBar></div><div id='stuff-large-column'><Header /><SearchBar /><Route exact path='/home' render={() => <HomePage />}></Route><Route exact path='/browse' render={() => <BrowseContainer />}></Route><Route path='/playlist/:name' render={() => <SongContainer />}></Route><Route path='/shared/:name' render={() => <SharedSongContainer />}></Route></div></> : <Route path='/login' render={() => <LoginContainer />}></Route>
     }
 
-
-    <StyledPlayer visible={true}><SpotifyPlayer id='spotify-player' play={this.props.play} magnifySliderOnHover={true} styles={{sliderColor: '#1cb954', color: '#1cb954' }} offset={this.props.playPosition} autoPlay={true} token={this.props.currentUser.token} uris={this.formatTrackUris(this.props.currentTracks)}/></StyledPlayer>
+    {this.props.currentUser.display_name ? 
+    <StyledPlayer visible={true}><SpotifyPlayer id='spotify-player' play={this.props.play} magnifySliderOnHover={true} styles={{sliderColor: '#1cb954', color: '#1cb954' }} offset={this.props.playPosition} autoPlay={true} token={this.props.currentUser.token} uris={this.formatTrackUris(this.props.currentTracks)}/></StyledPlayer> : null}
       </div>
     );
   }

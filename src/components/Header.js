@@ -56,6 +56,8 @@ class Header extends React.Component{
         })
     }
 
+
+
    
    renderMembers(){
        if(window.location.href.includes('shared')){
