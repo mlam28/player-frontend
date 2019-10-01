@@ -48,7 +48,7 @@ class App extends React.Component {
     window.localStorage.setItem('user', JSON.stringify({token: hash.token, userId: hash.id, spotifyId: hash.spotify_id, spotify_uri: hash.spotify_uri}))
 
     this.props.fetchUserPlaylists(hash.token)
-    
+    this.props.fetchFeaturedPlaylists(hash.token)
     this.props.fetchSharedPlaylists(hash.id)
     this.props.history.push('/home')
     } else if (window.localStorage.getItem('user')) {
@@ -79,7 +79,7 @@ class App extends React.Component {
     }
 
 
-    <StyledPlayer visible={true}><SpotifyPlayer id='spotify-player' play={this.props.play} magnifySliderOnHover={true} offset={this.props.playPosition} autoPlay={true} token={this.props.currentUser.token} uris={this.formatTrackUris(this.props.currentTracks)}/></StyledPlayer>
+    <StyledPlayer visible={true}><SpotifyPlayer id='spotify-player' play={this.props.play} magnifySliderOnHover={true} styles={{sliderColor: '#1cb954', color: '#1cb954' }} offset={this.props.playPosition} autoPlay={true} token={this.props.currentUser.token} uris={this.formatTrackUris(this.props.currentTracks)}/></StyledPlayer>
       </div>
     );
   }

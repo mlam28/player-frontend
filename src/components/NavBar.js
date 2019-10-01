@@ -45,15 +45,15 @@ class NavBar extends React.Component{
 
     render(){
         return(
-            <Menu inverted pointing vertical id='nav-bar'>
+            <Menu inverted pointing vertical fluid size='large' id='nav-bar'>
             <NavLink to='/home'><Menu.Item
               name='home'
-            //   active={activeItem === 'home'}
+              active={this.props.page === 'Home'}
               onClick={this.props.setHome}
             /></NavLink>
             <NavLink to='/browse'><Menu.Item
               name='Browse'
-            //   active={activeItem === 'messages'}
+              active={this.props.page === 'Browse'}
               onClick={this.props.setBrowse}
             /></NavLink>
             <Menu.Item id='menu-playlists-container'>
@@ -80,7 +80,8 @@ class NavBar extends React.Component{
 
 const mapStateToProps = (store) => {
   return {
-    sharedPlaylists: store.sharedPlaylists
+    sharedPlaylists: store.sharedPlaylists,
+    page: store.page
   }
 }
 

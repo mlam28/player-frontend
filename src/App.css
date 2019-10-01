@@ -35,6 +35,7 @@
 #nav-bar{
   display: inline-flex;
   float: left;
+  max-width: 14%
 }
 
 #header {
@@ -51,8 +52,14 @@
   flex-flow: row;
   justify-content: space-between;
   overflow-x: scroll;
-  background: blue;
+  
   height: 31em;
+}
+
+.browse-cards{
+  flex-wrap: wrap;
+  height: 76em;
+  
 }
 
 .playlist-card{
@@ -99,6 +106,7 @@
   display: flex;
     flex-wrap: wrap;
     overflow: scroll;
+    overflow-x: hidden;
     max-height: 65em;
     bottom: 0;
 
@@ -139,6 +147,7 @@
   display: flex;
     flex-wrap: wrap;
     overflow: scroll;
+    overflow-x: hidden;
     max-height: 65em;
     bottom: 0;
 
@@ -197,3 +206,11 @@
   float: right;
   padding-right: 7px;
 }
+
+
+/* padding-top: 20px;
+    margin-right: 1500px;
+    width: 200px; */
+
+
+

@@ -37,9 +37,9 @@ const tokenReducer = (state=null, action) => {
 const pageReducer = (state=null, action) => {
     switch(action.type){
         case 'HOME-PAGE':
-            return 'home'
+            return 'Home'
         case 'BROWSE-PAGE':
-            return 'browse'
+            return 'Browse'
         case 'PLAYLIST-PAGE':
             return action.name
         default:

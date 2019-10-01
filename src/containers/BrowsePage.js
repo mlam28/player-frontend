@@ -1,7 +1,7 @@
 import React from 'react'
 import { withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
-import CardContainer from './CardContainer'
+import BrowseCardContainer from './BrowseCardContainer'
 
 
 
@@ -12,8 +12,8 @@ class BrowseContainer extends React.Component{
     render(){
         return(
             <div id='browse-container'>
-                Browse HERE
-                <CardContainer playlists={this.props.featuredPlaylists}/>
+
+                <BrowseCardContainer playlists={this.props.featuredPlaylists}/>
             </div>
         )
     }

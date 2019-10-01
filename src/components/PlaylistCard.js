@@ -37,7 +37,7 @@ const PlaylistCard = ({currentUser, playlist, setPlaylistPage, fetchPlaylistTrac
     }
 
     return(
-        <Card className='playlist-card' >
+        <Card color='grey' className='playlist-card' >
             <Image className='card-image' onClick={handlePlaylistClick} src={playlist.images.length > 0 ? playlist.images[0].url : 'https://image.shutterstock.com/image-vector/playlist-app-icon-260nw-1208935387.jpg'} wrapped ui={false} />
             <Card.Content>
                 <Card.Header>{playlist.name}</Card.Header>
