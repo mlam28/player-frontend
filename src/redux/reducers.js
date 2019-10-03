@@ -71,9 +71,20 @@ const queueReducer = (state=[], action) => {
                   }
               })
               return newQueue
+        case 'ADD-DISLIKE-SONG':
+                let disQueue = state.map(track => {
+                    if (track.id === action.song.id){
+                        return action.song
+                    } else {
+                        return track
+                    }
+                })
+                return disQueue
         case 'DELETE-SONG-QUEUE':
             let filterQueue = state.filter(track => track.id !== action.songId)
             return filterQueue
+        case 'ADD-SONG-QUEUE':
+            return [...state, action.song]
         default:
             return state
     }
@@ -112,8 +123,9 @@ const sharedPlaylistsReducer = (state=[], action) => {
         case 'ADD':
             return [...state, action.playlist]
         case 'ADD-SONG':
+
           const newCopy = state.map(playlist => {
-              
+
               if (playlist.id === action.id) {
                   const copySongs = [...playlist.songs, action.song]
                  playlist.songs = copySongs
@@ -143,6 +155,23 @@ const sharedPlaylistsReducer = (state=[], action) => {
               })
               
               return likeCopy
+            case 'ADD-DISLIKE':
+                const disCopy = state.map(playlist => {
+                    if (playlist.id === action.song.playlist_id) {
+                        let disSongs = playlist.songs.map(song => {
+                            if(song.id === action.song.id){
+                                return action.song
+                            } else {
+                                return song
+                            }
+                        })
+                        playlist.songs = disSongs
+                        return playlist
+                    } else {
+                        return playlist
+                    }
+                })
+                return disCopy
             case 'DELETE-SONG-FROM-PLAYLIST':
                 let deleteCopy = state.map(playlist => {
                     if(playlist.id === action.playlistId){
@@ -176,6 +205,8 @@ const searchTracksReducer = (state=[], action) => {
     switch(action.type){
         case 'SET-SEARCHED-TRACKS':
             return action.tracks
+        case 'CLEAR-SEARCHED-TRACKS':
+            return []
         default:
             return state
     }
@@ -210,6 +241,18 @@ const playlistUsersReducers = (state=[], action) => {
     }
 }
 
+
+const nextUrlReducer = (state='', action)=> {
+    switch(action.type){
+        case 'SET-URL':
+            return action.url 
+        case 'CLEAR-URL':
+            return ''
+        default: 
+            return state
+    }
+}
+
 const rootReducer = combineReducers({
     currentUser: userReducer,
     token: tokenReducer,
@@ -224,7 +267,8 @@ const rootReducer = combineReducers({
     searchTracks: searchTracksReducer,
     searchAlbums: searchAlbumsReducer,
     copying: copyingReducer,
-    playlistUsers: playlistUsersReducers
+    playlistUsers: playlistUsersReducers,
+    nextUrl: nextUrlReducer
 })
 
 

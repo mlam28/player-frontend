@@ -14,7 +14,7 @@ class SharedPop extends React.Component{
 
     render(){
         return(
-            <Popup pinned={true} trigger={<Button><Icon name='hand spock'></Icon></Button>} flowing on='click'>
+            <Popup pinned={true} trigger={<Icon name='chevron right'></Icon>} flowing on='click'>
             <Popup.Content>
       <StyledPop>
             <div><a href={this.props.artisturi}>Go to Spotify Artist <Icon name='chevron right'></Icon></a></div>

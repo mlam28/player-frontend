@@ -12,6 +12,10 @@ margin-right: 3000px;
 width: 200px;
 justify-content: left`
 
+const OtherP = styled.div`
+padding-top: 15px
+`
+
 class Header extends React.Component{
 
     constructor(){
@@ -22,7 +26,6 @@ class Header extends React.Component{
         }
     }
 
- 
     
 
     handleChange = (e) => {
@@ -32,10 +35,6 @@ class Header extends React.Component{
     }
 
    
-    handleLogout = () => {
-        this.props.logoutUserFromStorage()
-        this.props.history.push('/login')
-    }
 
     handleDownload = () => {
 
@@ -48,12 +47,14 @@ class Header extends React.Component{
         }
     }
 
-    handleAddUser = () => {
+    handleAddUser = (e) => {
+        if(e.key === "Enter") {
         console.log('add user please')
         this.props.addUserToPlaylist(this.state.uri)
         this.setState({
             uri: ''
         })
+        }
     }
 
 
@@ -72,16 +73,18 @@ class Header extends React.Component{
         return(
         <div id='header'>
             <div id='header-text'>
-                <h1>{this.props.page}</h1><br></br>  
+                <h1>{this.props.page}</h1><br></br> 
+                {window.location.href.includes('shared') ?  
+            <div><Input onKeyUp={this.handleAddUser} id='add-user-form' onChange=    {this.handleChange} value={this.state.uri} placeholder='Add Friend by Spotify URI'></Input><br></br></div> : null} 
                 {this.renderMembers()}
+            
             </div>
             <div id='meta-data'></div>
-            <div id='logout-button'><Button onClick={this.handleLogout}>Logout</Button></div>
+           
             {window.location.href.includes('shared') ? 
             <>
             <div id='download-button'><Button color='blue' onClick={this.handleDownload}>Download/Update to Spotify<Icon name='arrow alternate circle down outline'></Icon></Button></div>
-          <Form id='user-form'>
-            <Input onChange={this.handleChange} value={this.state.uri} placeholder='Spotify URI'></Input><br></br><Button onClick={this.handleAddUser}>Add Friend</Button></Form></> : null }
+        </> : null}
          </div>
         )
     }

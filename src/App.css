@@ -12,12 +12,30 @@
   width: 85%
 }
 
+.spotify{
+  padding-left: 6px;
+}
+
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
+  height: 40px;
   pointer-events: none;
 }
 
+#login-background{
+  background: linear-gradient(-45deg, #f8faf5, #d8eddc);
+    width: 100%;
+    height: 100vh
+}
+
+#welcome{
+  padding-top: 20px;
+  padding-bottom: 20px
+}
+
+#button-wrapper{
+  padding: 20px;
+}
 
 .App-header {
   background-color: #282c34;
@@ -53,7 +71,7 @@
 }
 
 #header {
-  height: 20em
+  height: 18em
 }
 
 
@@ -64,12 +82,13 @@
   flex-flow: row;
   overflow-x: scroll;
   
-  height: 31em;
+  height: 35em;
 }
 
 .browse-cards{
   flex-wrap: wrap;
-  height: 76em;
+  height: 110em;
+
   
 }
 
@@ -77,11 +96,12 @@
   background: none;
   display: flex;
   margin: 1em 2em;
+  height: 29em
 }
 
 .search-card{
   flex-direction: row !important;
-  height: 38px !important;
+  height: 60px !important;
 }
 
 .ui.card{
@@ -97,6 +117,7 @@
   display: flex;
   flex-flow: row;
   flex-wrap: wrap;
+  justify-content: center
 }
 
 
@@ -107,10 +128,10 @@
 
 
 .meta{
-  padding-top: 20px  !important;
+  margin-top: 30px  !important;
     float: left !important;
     position: absolute !important;
-    margin-left: 40px !important;
+    margin-left: 70px !important;
 }
 
 .search-header{
@@ -145,7 +166,7 @@
     overflow: scroll;
     overflow-x: hidden;
     max-height: 65em;
-    bottom: 0;
+    margin-bottom: 50px;
 
 }
 
@@ -186,7 +207,7 @@
     overflow: scroll;
     overflow-x: hidden;
     max-height: 65em;
-    bottom: 0;
+    margin-bottom: 50px;
 
 }
 
@@ -232,10 +253,17 @@
   right: 0;
   padding-top: 7px;
   padding-right: 7px;
+  margin-right: 70px
 }
 
 #user-form{
   float: left !important;
+}
+
+#add-user-form{
+  width: 190px;
+  margin-left: 20px;
+    
 }
 
 #logout-button{
@@ -269,4 +297,45 @@
 #search-input{
   max-width: 100%;
   margin-left: 25px;
+}
+
+.filter-column{
+  width: 20%
+}
+
+
+/* .opaque-play-icon{
+  opacity: 0 !important
+} */
+
+.content-details{
+  opacity: 0;
+  bottom: 40%;
+  position: absolute;
+  text-align: center;
+  z-index: 0
+}
+
+
+.very-small-cover:hover {
+  opacity: 0.3
+}
+
+.hover-container{
+  text-align: center;
+}
+
+
+.very-small-cover:hover .content-details .fadeIn-top{
+ opacity: 1;
+ text-align: center
+}
+
+.middle{
+  transition: .5 ease;
+  opacity: 0
+}
+
+#clear{
+  color: blue
 }

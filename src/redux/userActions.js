@@ -57,6 +57,7 @@ function fetchFeaturedPlaylists(token){
 }
 
 function setCurrentTracks(tracks) {
+
     return {type: 'SET-TRACKS', tracks: tracks}
 }
 
@@ -140,7 +141,7 @@ function addPlaylist(playlist){
 function addSong(e, song, playlist_id){
     console.log('hello')
 
-    return function(dispatch){
+    return function(dispatch, getState){
         const data = {
             song_playlist: {name: song.name, uri: song.uri, time: song.time, artist_uri: song.artist_uri, playlist_id: playlist_id, artist: song.artist}
         }
@@ -151,8 +152,19 @@ function addSong(e, song, playlist_id){
             },
             body: JSON.stringify(data)
         }
-        fetch('http://localhost:3000/song_playlists', obj).then(resp => resp.json()).then(song => {console.log(song); dispatch(findPlaylistAddSong(song))})
+        fetch('http://localhost:3000/song_playlists', obj).then(resp => resp.json()).then(song => {console.log(song); 
+        const copyId = getState().copying;
+        if(copyId === song.playlist_id){
+
+            dispatch(addSongToQueue(song.song))
+        }
+
+        dispatch(findPlaylistAddSong(song))})
     }
+}
+
+function addSongToQueue(song){
+    return {type: 'ADD-SONG-QUEUE', song: song}
 }
 
 
@@ -179,7 +191,7 @@ function fetchAddLike(e, song_id){
 
         const userId = getState().currentUser.userId
         const data ={ 
-            like: {song_playlist_id: song_id, user_id: userId, liked: true}
+            like: {song_playlist_id: song_id, user_id: userId}
         }
         const obj ={
             method: 'POST',
@@ -192,28 +204,84 @@ function fetchAddLike(e, song_id){
     }
 }
 
+function fetchDislike(e, song_id){
+
+    return function(dispatch, getState){
+
+        const userId = getState().currentUser.userId
+        const data ={ 
+            like: {song_playlist_id: song_id, user_id: userId}
+        }
+        const obj ={
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }
+        fetch('http://localhost:3000/dislikes', obj).then(resp => resp.json()).then(song => {console.log(song); dispatch(addLike(song)); dispatch(addDislike(song)); dispatch(addDisQueue(song))})
+    }
+
+
+}
+
+
+
+
+function addDislike(song){
+    return {type: 'ADD-LIKE', song: song}
+}
+
+function addDisQueue(song){
+    return{type: 'ADD-DISLIKE-SONG', song: song}
+}
+
 function spotifySearch(input){
-    debugger
+
     return function(dispatch, getState){
         let token = getState().currentUser.token
-        
+        let options = JSON.stringify({limit: 50})
         spotifyApi.setAccessToken(token)
-        spotifyApi.search(input, ['track', 'album', 'artist']).then(resp => {console.log(resp); 
+        spotifyApi.searchTracks(input, options).then(resp => {console.log(resp); 
         let tracks = resp.tracks.items.map(item => {
-          return  Object.assign({}, {image: item.album.images[2].url, name: item.name, artist: item.artists[0].name, artist_uri: item.artists[0].uri, song_uri: item.uri})
+          return  Object.assign({}, {image: item.album.images[2].url, name: item.name, artist: item.artists[0].name, artist_uri: item.artists[0].uri, uri: item.uri, time: formatDuration(item.duration_ms)})
         })
 
-        let albums = resp.albums.items.map(item => {
-           return Object.assign({}, {
-                name: item.name, image: item.images[2].url, artist: item.artists[0].name, artist_uri: item.artists[0].uri, album_uri: item.uri
-            })
-        })
-
+        // let albums = resp.albums.items.map(item => {
+        //    return Object.assign({}, {
+        //         name: item.name, image: item.images[2].url, artist: item.artists[0].name, artist_uri: item.artists[0].uri, album_uri: item.uri
+        //     })
+        // })
+        dispatch(setNextUrl(resp.tracks.href))
         dispatch(setSearchTracks(tracks));
-        dispatch(setSearchAlbums(albums))
+        // dispatch(setSearchAlbums(albums))
         
         } )
     }
+}
+
+
+
+// does not work, has cors issue, will come back later
+function getMore(){
+    return function(dispatch, getState){
+        let token = getState().currentUser.token
+        let obj = {
+            method: 'GET',
+            headers: {
+                'Authorization': "Bearer" + token,
+                'Content-Type': 'application/json'
+            }
+        }
+       let url = 'https://api.spotify.com/v1/search?query=hello&type=track&market=US&offset=0&limit=20'
+
+       fetch(url, obj).then(resp => console.log(resp))
+    }
+}
+
+
+function setNextUrl(url){
+    return {type: 'SET-URL', url: url}
 }
 
 function deleteSong(songPlaylistId){
@@ -242,7 +310,7 @@ function deleteSongFromPlaylist(data){
 
 
 function downToSpotify(name){
-    debugger
+
     return function(dispatch, getState){
         let userId = getState().currentUser.userId
         let tracks = getState().queueTracks.map(track => track.uri)
@@ -267,7 +335,7 @@ function copying(playlistId){
 }
 
 function updateToSpotify(){
-    debugger
+
     return function(dispatch, getState){
         let userId = getState().currentUser.userId
         let tracks = getState().queueTracks.map(track => track.uri)
@@ -340,4 +408,8 @@ function setSearchAlbums(results){
     return {type: 'SET-SEARCHED-ALBUMS', albums: results}
 }
 
-export {setUser, logoutUser, setToken, setHome, setBrowse, fetchUserPlaylists, logoutUserFromStorage, fetchPlaylistTracks, setPlaylistPage, setCurrentTracks, setQueueTracks, setPlayPosition, fetchFeaturedPlaylists, fetchSharedPlaylists, playMusic, pauseMusic, makePlaylist, addSong, fetchAddLike, spotifySearch, deleteSong, copying, downToSpotify, updateToSpotify, addUserToPlaylist, fetchPlaylistMembers, clearPUsers}
+function clearSearchedTracks(){
+    return {type: 'CLEAR-SEARCHED-TRACKS'}
+}
+
+export { setUser, logoutUser, setToken, setHome, setBrowse, fetchUserPlaylists, logoutUserFromStorage, fetchPlaylistTracks, setPlaylistPage, setCurrentTracks, setQueueTracks, setPlayPosition, fetchFeaturedPlaylists, fetchSharedPlaylists, playMusic, pauseMusic, makePlaylist, addSong, fetchAddLike, spotifySearch, deleteSong, copying, downToSpotify, updateToSpotify, addUserToPlaylist, fetchPlaylistMembers, clearPUsers, clearSearchedTracks, fetchDislike}

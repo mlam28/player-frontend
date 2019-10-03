@@ -1,11 +1,18 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {Icon, Button} from 'semantic-ui-react'
-import {setCurrentTracks, setPlayPosition, playMusic, fetchAddLike, deleteSong} from '../redux/userActions'
+import {Icon, Button, Input} from 'semantic-ui-react'
+import {fetchDislike, setCurrentTracks, setPlayPosition, playMusic, fetchAddLike, deleteSong} from '../redux/userActions'
 import FormPop from '../components/FormPop'
 import SharedPop from '../components/SharedPop'
 
 class SharedSongContainer extends React.Component{
+
+    constructor(){
+        super()
+        this.state={
+            filter: ''
+        }
+    }
 
     handleClick = (e, index) => {
         this.props.setCurrentTracks(this.props.queueTracks)
@@ -19,6 +26,16 @@ class SharedSongContainer extends React.Component{
         this.props.deleteSong(songId)
     }
 
+    handleFilterChange = (e) => {
+        this.setState({
+            filter: e.target.value
+        })
+    }
+
+    filteredSongs = () => {
+        return this.props.queueTracks.filter(track => track.name.toLowerCase().includes(this.state.filter.toLowerCase()) || track.artist.toLowerCase().includes(this.state.filter.toLowerCase()))
+     }
+
 
     render(){
         return(
@@ -30,10 +47,12 @@ class SharedSongContainer extends React.Component{
                     <div className='my-fourths-column'>Title</div>
                     <div className='my-fourths-column'>Artist</div>
                     <div className='my-small-column'>Time</div>
+                    <div className='filter-column'><Input placeholder='Filter' onChange={this.handleFilterChange} icon='filter'></Input></div>
+
 
                 </div>
 
-                {this.props.queueTracks.map((song, index) => {
+                {this.filteredSongs().map((song, index) => {
                     return(
                         <div className='my-row' key={song.uri}>
                             <div className='my-smaller-column'><Icon name='play circle outline'  size='large' color='blue' onClick={(e) => this.handleClick(e, index)}></Icon></div>
@@ -42,7 +61,7 @@ class SharedSongContainer extends React.Component{
                             <div className='my-small-column'>{song.time}</div>
                             <div className='my-smaller-column'><SharedPop artisturi={song.artist_uri}/></div>
                             <div className='my-smaller-column'><Button onClick={(e) => this.props.fetchAddLike(e, song.id)}><Icon name='thumbs up outline'></Icon></Button><div></div>{song.likes.length}</div>
-                            <div className='my-smaller-column'><Button><Icon name='thumbs down outline'></Icon></Button></div>
+                            <div className='my-smaller-column'><Button onClick={(e) => this.props.fetchDislike(e, song.id)}><Icon name='thumbs down outline'></Icon></Button><div></div>{song.dislikes.length}</div>
                             <div className='my-smaller-column'><Button onClick={() => this.handleDeleteClick(song.id)}><Icon name='trash alternate outline'></Icon></Button></div>
                         </div>
 
@@ -72,7 +91,8 @@ const mapDispatchToProps = (dispatch) => {
         setPlayPosition: (num) => dispatch(setPlayPosition(num)),
         playMusic: () => dispatch(playMusic()),
         fetchAddLike: (e, song_id) => dispatch(fetchAddLike(e, song_id)),
-        deleteSong: (songId) => dispatch(deleteSong(songId))
+        deleteSong: (songId) => dispatch(deleteSong(songId)),
+        fetchDislike: (e, song_id) => dispatch(fetchDislike(e, song_id))
     }
 }
 

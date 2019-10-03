@@ -40,13 +40,14 @@ class FormPop extends React.Component {
 
       render(){
             return(
-            <Popup pinned={true} open={this.state.isOpen} trigger={<Button onClick={this.handleOpen}><Icon name='hand spock'></Icon></Button>} flowing on='click'>
+            <Popup pinned={true} open={this.state.isOpen} trigger={<div onClick={this.handleOpen}><Icon name='angle right'></Icon></div>} flowing on='click'>
                   <Popup.Content>
             <StyledPop>
                   <Popup
                   pinned={true}
+                  onClose={this.handleClose}
                   flowing on='click'
-                  trigger={<div>Add to Playlist <Icon name='chevron right'></Icon></div>}
+                  trigger={<div >Add to Playlist <Icon name='chevron right'></Icon></div>}
                   position='top center'
                   size='large'
                   inverted

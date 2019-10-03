@@ -3,7 +3,7 @@ import {NavLink} from 'react-router-dom'
 import {withRouter} from 'react-router-dom'
 import { Menu, Icon} from 'semantic-ui-react'
 import { Header, Button, Popup, Grid } from 'semantic-ui-react'
-import {setHome, setBrowse, makePlaylist, setQueueTracks, setPlaylistPage, copying, fetchPlaylistMembers} from '../redux/userActions'
+import {logoutUserFromStorage, setHome, setBrowse, makePlaylist, setQueueTracks, setPlaylistPage, copying, fetchPlaylistMembers} from '../redux/userActions'
 import {connect} from 'react-redux'
 
 
@@ -17,9 +17,7 @@ class NavBar extends React.Component{
   }
 
   handleSubmit = () => {
-    console.log('clicked')
 
-  
     this.props.makePlaylist(this.state.playlistName)
 
     this.setState({
@@ -34,14 +32,17 @@ class NavBar extends React.Component{
   }
 
   handlePlaylistClick = (e, playlist) => {
-
-    console.log('clicked')
     this.props.setQueueTracks(playlist.songs)
     this.props.setPlaylistPage(playlist.name)
     this.props.copying(playlist.id)
     this.props.fetchPlaylistMembers()
     this.props.history.push('/shared/' + playlist.name + '#' + playlist.playlist_uri)
   }
+
+  handleLogout = () => {
+    this.props.logoutUserFromStorage()
+    this.props.history.push('/login')
+}
 
     render(){
         return(
@@ -76,7 +77,7 @@ class NavBar extends React.Component{
                 {this.props.sharedPlaylists.length > 0 ? this.props.sharedPlaylists.map(playlist => <Menu.Item active={this.props.page === playlist.name}onClick={(e) => this.handlePlaylistClick(e, playlist)}>{playlist.name}</Menu.Item>) : null}
                 </Menu.Menu>
               </Menu.Item>
-              <Menu.Item hover>Logout</Menu.Item>
+              <Menu.Item hover onClick={this.handleLogout}>Logout</Menu.Item>
           </Menu>
         )
     }
@@ -98,7 +99,8 @@ const mapDispatchToProps = (dispatch) => {
     setQueueTracks: (tracks) => dispatch(setQueueTracks(tracks)),
     setPlaylistPage: (name) => dispatch(setPlaylistPage(name)),
     copying: (playlistId) => dispatch(copying(playlistId)),
-    fetchPlaylistMembers: () => dispatch(fetchPlaylistMembers())
+    fetchPlaylistMembers: () => dispatch(fetchPlaylistMembers()),
+    logoutUserFromStorage: () => dispatch(logoutUserFromStorage())
   }
 }
 

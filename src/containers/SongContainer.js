@@ -1,7 +1,7 @@
 import React from 'react'
 
 import {connect} from 'react-redux'
-import {Icon} from 'semantic-ui-react'
+import {Icon, Input} from 'semantic-ui-react'
 import {setCurrentTracks, setPlayPosition, playMusic} from '../redux/userActions'
 import FormPop from '../components/FormPop'
 
@@ -11,11 +11,29 @@ import FormPop from '../components/FormPop'
 
 class SongContainer extends React.Component{
 
+    constructor(){
+        super()
+        this.state={
+            filter: ''
+        }
+    }
+
+
+    handleFilterChange = (e) => {
+        this.setState({
+            filter: e.target.value
+        })
+    }
+
     handleClick = (e, index) => {
         console.log('clicked')
         this.props.setCurrentTracks(this.props.queueTracks)
         this.props.setPlayPosition(index)
        this.props.playMusic()
+    }
+
+    filteredSongs = () => {
+       return this.props.queueTracks.filter(track => track.name.toLowerCase().includes(this.state.filter.toLowerCase()) || track.artist.toLowerCase().includes(this.state.filter.toLowerCase()))
     }
 
     render(){
@@ -26,9 +44,10 @@ class SongContainer extends React.Component{
                     <div className='my-column'>Title</div>
                     <div className='my-column'>Artist</div>
                     <div className='my-column'>Time</div>
+                   <div className='filter-column'><Input placeholder='Filter' onChange={this.handleFilterChange} icon='filter'></Input></div>
                 </div>
 
-                {this.props.queueTracks.map((song, index) => {
+                {this.filteredSongs().map((song, index) => {
                     return(
                         <div className='my-row' key={song.uri}>
                             <div className='my-small-column'><Icon size='large' name='play circle outline'  onClick={(e) => this.handleClick(e, index)}></Icon></div>
@@ -58,7 +77,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setCurrentTracks: (tracks) => dispatch(setCurrentTracks(tracks)),
         setPlayPosition: (num) => dispatch(setPlayPosition(num)),
-        playMusic: () => dispatch(playMusic())
+        playMusic: () => dispatch(playMusic()),
+
     }
 }
 

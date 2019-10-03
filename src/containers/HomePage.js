@@ -2,6 +2,13 @@ import React from 'react'
 import {logoutUser} from '../redux/userActions'
 import {connect} from 'react-redux'
 import CardContainer from './CardContainer'
+import styled from 'styled-components'
+
+
+const H2 = styled.div`
+    padding-top: 30px;
+    padding-bottom: 7px
+`
 
 
 class HomePage extends React.Component{
@@ -15,7 +22,7 @@ class HomePage extends React.Component{
     render(){
         return(
             <div> 
-                <h2>Your Personal Playlists</h2>
+                <H2><h2>Your Personal Playlists</h2></H2>
                 <CardContainer playlists={this.filterShared()}/>
                 <h2>Your Shared Playlists</h2>
                 <CardContainer playlists={this.props.sharedPlaylists}/>
