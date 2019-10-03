@@ -60,9 +60,9 @@ class SharedSongContainer extends React.Component{
                             <div className='my-fourths-column'>{song.artist}</div>
                             <div className='my-small-column'>{song.time}</div>
                             <div className='my-smaller-column'><SharedPop artisturi={song.artist_uri}/></div>
-                            <div className='my-smaller-column'><Button onClick={(e) => this.props.fetchAddLike(e, song.id)}><Icon name='thumbs up outline'></Icon></Button><div></div>{song.likes.length}</div>
-                            <div className='my-smaller-column'><Button onClick={(e) => this.props.fetchDislike(e, song.id)}><Icon name='thumbs down outline'></Icon></Button><div></div>{song.dislikes.length}</div>
-                            <div className='my-smaller-column'><Button onClick={() => this.handleDeleteClick(song.id)}><Icon name='trash alternate outline'></Icon></Button></div>
+                            <div className='my-smaller-column'><Button onClick={(e) => this.props.fetchAddLike(e, song.id)}><Icon className='shared-button' name='thumbs up outline'></Icon></Button><div></div>{song.likes.length}</div>
+                            <div className='my-smaller-column'><Button onClick={(e) => this.props.fetchDislike(e, song.id)}><Icon className='shared-button' name='thumbs down outline'></Icon></Button><div></div>{song.dislikes.length}</div>
+                            <div className='my-smaller-column'><Button onClick={() => this.handleDeleteClick(song.id)}><Icon className='shared-button' name='trash alternate outline'></Icon></Button></div>
                         </div>
 
                     )

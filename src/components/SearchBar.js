@@ -88,7 +88,7 @@ class SearchBar extends React.Component{
                     </Card>) : null}
                     </div>
 
-                <div><Icon name='chevron left'></Icon><Icon name='chevron right' ></Icon></div>
+                {/* <div><Icon name='chevron left'></Icon><Icon name='chevron right' ></Icon></div> */}
 
                  </div>
             </div>

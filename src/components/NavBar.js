@@ -2,7 +2,7 @@ import React from 'react'
 import {NavLink} from 'react-router-dom'
 import {withRouter} from 'react-router-dom'
 import { Menu, Icon} from 'semantic-ui-react'
-import { Header, Button, Popup, Grid } from 'semantic-ui-react'
+import { Header, Button, Popup, Grid, Input } from 'semantic-ui-react'
 import {logoutUserFromStorage, setHome, setBrowse, makePlaylist, setQueueTracks, setPlaylistPage, copying, fetchPlaylistMembers} from '../redux/userActions'
 import {connect} from 'react-redux'
 
@@ -12,16 +12,18 @@ class NavBar extends React.Component{
   constructor(){
     super()
     this.state = {
-      playlistName: ''
+      playlistName: '',
+      imageURL: ''
     }
   }
 
   handleSubmit = () => {
 
-    this.props.makePlaylist(this.state.playlistName)
+    this.props.makePlaylist(this.state.playlistName, this.state.imageURL)
 
     this.setState({
-      playlistName: ''
+      playlistName: '',
+      imageURL: ''
     })
 
   }
@@ -42,6 +44,12 @@ class NavBar extends React.Component{
   handleLogout = () => {
     this.props.logoutUserFromStorage()
     this.props.history.push('/login')
+}
+
+handleurlChange = (e) => {
+  this.setState({
+    imageURL: e.target.value
+  })
 }
 
     render(){
@@ -67,8 +75,8 @@ class NavBar extends React.Component{
                           <Popup trigger={<p>New Playlist<Icon name='add' color='yellow'></Icon></p>} on='click'>
                               <Grid centered divided columns={1}>
                                 <Grid.Column textAlign='center'>
-                                  <Header as='h4'>Playlist Name</Header>
-                                  <input name='playlistName' value={this.state.playlistName} onChange={this.handleChange}></input>
+                                  <Input name='playlistName' value={this.state.playlistName} placeholder='Playlist Name' onChange={this.handleChange}></Input>
+                                  <Input name='imageURL' value={this.state.imageURL} placeholder='image URL (opt)' onChange={this.handleurlChange}></Input>
                                   <Button onClick={this.handleSubmit}>Submit</Button>
                                 </Grid.Column>
                               </Grid>
@@ -95,7 +103,7 @@ const mapDispatchToProps = (dispatch) => {
   return{
     setHome: () => dispatch(setHome()),
     setBrowse: () => dispatch(setBrowse()),
-    makePlaylist: (name) => dispatch(makePlaylist(name)),
+    makePlaylist: (name, imageURL) => dispatch(makePlaylist(name, imageURL)),
     setQueueTracks: (tracks) => dispatch(setQueueTracks(tracks)),
     setPlaylistPage: (name) => dispatch(setPlaylistPage(name)),
     copying: (playlistId) => dispatch(copying(playlistId)),

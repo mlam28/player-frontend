@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 const LogIn = styled.div`
     position: absolute
-    left: 43%;
+    left: 41%;
     top: 42%;
     background: rgba(0,0,0,.87);
 

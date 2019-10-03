@@ -112,13 +112,13 @@ function pauseMusic(){
 }
 
 
-function makePlaylist(name){
+function makePlaylist(name, imageURL){
 
     return function(dispatch, getState){
        const userId = getState().currentUser.userId
        
     const data = {
-        playlist: {name: name, user_ids:[userId]}
+        playlist: {name: name, image: imageURL, user_ids:[userId]}
     }
     const obj = {
         method: 'POST',
@@ -359,11 +359,17 @@ function updateToSpotify(){
 }
 
 
+function addPlaylistUser(user){
+
+    return {type: 'ADD-USER-T0-PLAYLIST', user: user}
+}
+
+
 function addUserToPlaylist(uri){
     return function(dispatch, getState){
         let userId = getState().currentUser.userId
         let playlistId = getState().copying
-        debugger
+
         let data = { user_playlist: {user_id: userId, playlist_id: playlistId, add_uri: uri}}
         let obj = {
             method: 'POST',
@@ -375,7 +381,12 @@ function addUserToPlaylist(uri){
 
         fetch('http://localhost:3000/user_playlists', obj).then(resp => resp.json()).then(data => {console.log(data); 
         if(data.message){
+
             alert(data.message)
+        } 
+        if(data.user){
+
+            dispatch(addPlaylistUser(data.user))
         }
     })
     }
@@ -411,5 +422,7 @@ function setSearchAlbums(results){
 function clearSearchedTracks(){
     return {type: 'CLEAR-SEARCHED-TRACKS'}
 }
+
+
 
 export { setUser, logoutUser, setToken, setHome, setBrowse, fetchUserPlaylists, logoutUserFromStorage, fetchPlaylistTracks, setPlaylistPage, setCurrentTracks, setQueueTracks, setPlayPosition, fetchFeaturedPlaylists, fetchSharedPlaylists, playMusic, pauseMusic, makePlaylist, addSong, fetchAddLike, spotifySearch, deleteSong, copying, downToSpotify, updateToSpotify, addUserToPlaylist, fetchPlaylistMembers, clearPUsers, clearSearchedTracks, fetchDislike}

@@ -234,12 +234,17 @@ const playlistUsersReducers = (state=[], action) => {
     switch(action.type){
         case 'SET-USERS': 
             return action.users
+        case 'ADD-USER-T0-PLAYLIST':
+            return [...state, action.user]
         case 'CLEAR':
             return []
         default:
             return state
     }
 }
+
+
+
 
 
 const nextUrlReducer = (state='', action)=> {
