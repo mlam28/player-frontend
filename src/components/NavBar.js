@@ -75,9 +75,9 @@ handleurlChange = (e) => {
                           <Popup trigger={<p>New Playlist<Icon name='add' color='yellow'></Icon></p>} on='click'>
                               <Grid centered divided columns={1}>
                                 <Grid.Column textAlign='center'>
-                                  <Input name='playlistName' value={this.state.playlistName} placeholder='Playlist Name' onChange={this.handleChange}></Input>
-                                  <Input name='imageURL' value={this.state.imageURL} placeholder='image URL (opt)' onChange={this.handleurlChange}></Input>
-                                  <Button onClick={this.handleSubmit}>Submit</Button>
+                                  <Input className='playist-input' name='playlistName' value={this.state.playlistName} placeholder='Playlist Name' onChange={this.handleChange}></Input>
+                                  <Input className='playlist-input' name='imageURL' value={this.state.imageURL} placeholder='image URL (opt)' onChange={this.handleurlChange}></Input>
+                                  <Button color='blue' onClick={this.handleSubmit}>Make</Button>
                                 </Grid.Column>
                               </Grid>
                         </Popup>
