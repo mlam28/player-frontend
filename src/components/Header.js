@@ -63,7 +63,7 @@ class Header extends React.Component{
    renderMembers(){
        if(window.location.href.includes('shared')){
            return(
-            <StyledP><p>Members: {this.props.playlistUsers.length > 0 ? this.props.playlistUsers.map(user => <a href={user.spotify_uri}>{user.name}</a>) : 'No Members Yet'}</p></StyledP>
+            <StyledP><p>Members: {this.props.playlistUsers.length > 0 ? this.props.playlistUsers.map(user => <a className='user-playlist' href={user.spotify_uri}>{user.name}</a>) : 'No Members Yet'}</p></StyledP>
            )
        }
    }

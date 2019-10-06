@@ -22,9 +22,9 @@ class HomePage extends React.Component{
     render(){
         return(
             <div> 
-                <H2><h2>Your Personal Playlists</h2></H2>
+                <H2><h2>Personal Spotify Playlists</h2></H2>
                 <CardContainer playlists={this.filterShared()}/>
-                <h2>Your Shared Playlists</h2>
+                <h2>Shared Playlists</h2>
                 <CardContainer playlists={this.props.sharedPlaylists}/>
             </div>
         )
