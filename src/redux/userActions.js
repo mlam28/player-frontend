@@ -424,5 +424,32 @@ function clearSearchedTracks(){
 }
 
 
+function deletePlaylist(){
 
-export { setUser, logoutUser, setToken, setHome, setBrowse, fetchUserPlaylists, logoutUserFromStorage, fetchPlaylistTracks, setPlaylistPage, setCurrentTracks, setQueueTracks, setPlayPosition, fetchFeaturedPlaylists, fetchSharedPlaylists, playMusic, pauseMusic, makePlaylist, addSong, fetchAddLike, spotifySearch, deleteSong, copying, downToSpotify, updateToSpotify, addUserToPlaylist, fetchPlaylistMembers, clearPUsers, clearSearchedTracks, fetchDislike}
+    return function(dispatch, getState){
+        let playlistId = getState().copying
+        const obj = {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+
+        fetch(`http://localhost:3000/playlists/${playlistId}`, obj).then(resp => resp.json()).then(data => {
+            console.log(data);
+            if (data.message === 'successfully deleted'){
+            dispatch(dispatchDeletePlaylist(playlistId))
+            } else {
+                alert('delete failed, please try again later.')
+            }
+        })
+    }
+}
+
+function dispatchDeletePlaylist(id){
+
+    return {type: 'DELETE-PLAYLIST', playlistId: id}
+}
+
+
+export { setUser, logoutUser, setToken, setHome, setBrowse, fetchUserPlaylists, logoutUserFromStorage, fetchPlaylistTracks, setPlaylistPage, setCurrentTracks, setQueueTracks, setPlayPosition, fetchFeaturedPlaylists, fetchSharedPlaylists, playMusic, pauseMusic, makePlaylist, addSong, fetchAddLike, spotifySearch, deleteSong, copying, downToSpotify, updateToSpotify, addUserToPlaylist, fetchPlaylistMembers, clearPUsers, clearSearchedTracks, fetchDislike, deletePlaylist}

@@ -1,7 +1,7 @@
 import React from 'react'
 import { withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
-import {logoutUserFromStorage, downToSpotify, updateToSpotify, addUserToPlaylist, fetchPlaylistMembers} from '../redux/userActions'
+import {setHome, deletePlaylist, logoutUserFromStorage, downToSpotify, updateToSpotify, addUserToPlaylist, fetchPlaylistMembers} from '../redux/userActions'
 import {Button, Input, Label, Icon, Form} from 'semantic-ui-react'
 import styled from 'styled-components'
 
@@ -58,6 +58,19 @@ class Header extends React.Component{
     }
 
 
+    handlePlaylistDelete = () => {
+       if (window.confirm('Delete Playlist?')){
+        console.log('head to delete playlist')
+        this.props.deletePlaylist()
+        this.props.setHome()
+        this.props.history.push('/home')
+       } else {
+           console.log('do not delete playlist')
+       }
+
+    }
+
+
 
    
    renderMembers(){
@@ -84,6 +97,7 @@ class Header extends React.Component{
             {window.location.href.includes('shared') ? 
             <>
             <div id='download-button'><Button color='blue' onClick={this.handleDownload}>Download/Update to Spotify<Icon name='arrow alternate circle down outline'></Icon></Button></div>
+            <div><Icon onClick={this.handlePlaylistDelete} className='delete-playlist' name='delete'>Delete Playlist</Icon></div>
         </> : null}
          </div>
         )
@@ -105,7 +119,9 @@ const mapDispatchToProps = (dispatch) => {
         downToSpotify: (name) => dispatch(downToSpotify(name)),
         updateToSpotify: () => dispatch(updateToSpotify()),
         addUserToPlaylist: (uri) => dispatch(addUserToPlaylist(uri)),
-        fetchPlaylistMembers: () => dispatch(fetchPlaylistMembers())
+        fetchPlaylistMembers: () => dispatch(fetchPlaylistMembers()),
+        deletePlaylist: () => dispatch(deletePlaylist()),
+        setHome: () => dispatch(setHome())
     }
 }
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header))

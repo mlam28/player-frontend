@@ -183,6 +183,9 @@ const sharedPlaylistsReducer = (state=[], action) => {
                     }
                 })
                 return deleteCopy
+            case 'DELETE-PLAYLIST':
+                let filteredCopy = state.filter(playlist => playlist.id !== action.playlistId)
+                return filteredCopy
         default:
             return state
     }
