@@ -38,7 +38,7 @@ const PlaylistCard = ({currentUser, playlist, setPlaylistPage, fetchPlaylistTrac
 
     return(
         <Card color='grey' className='playlist-card' >
-            <Image height='280 !important' width='280 !important' className='card-image' onClick={handlePlaylistClick} src={playlist.images.length > 0 ? playlist.images[0].url : 'https://data.whicdn.com/images/292360124/original.jpg'} wrapped ui={false} />
+            <Image height='280 !important' width='280 !important' className='card-image' onClick={handlePlaylistClick} src={playlist.images.length > 0 && playlist.images[0].url !== '' ? playlist.images[0].url : 'https://data.whicdn.com/images/292360124/original.jpg'} wrapped ui={false} />
             <Card.Content>
                 <Card.Header>{playlist.name}</Card.Header>
               <img onClick={(e) => handlePlayButtonClick(e, playlist)}src={require('../images/icons8-circled-play-50.png')}></img>
