@@ -309,6 +309,8 @@ function deleteSongFromPlaylist(data){
 }
 
 
+
+// copies selected playlist down to spotify by fetching to rails backend--which then alters spotify
 function downToSpotify(name){
 
     return function(dispatch, getState){
@@ -334,6 +336,8 @@ function copying(playlistId){
     return {type: 'COPYING', playlistId: playlistId}
 }
 
+
+// updates playlist that is already copied down to spotify by fetching to rails backend--which then alters spotify
 function updateToSpotify(){
 
     return function(dispatch, getState){
@@ -359,12 +363,13 @@ function updateToSpotify(){
 }
 
 
+// redux action producer which adds a user to playlist on the frontend after successfully persisting in the backend.
 function addPlaylistUser(user){
-
     return {type: 'ADD-USER-T0-PLAYLIST', user: user}
 }
 
 
+// fetches to backend to add user to a playlist and dipstaches redux action
 function addUserToPlaylist(uri){
     return function(dispatch, getState){
         let userId = getState().currentUser.userId
@@ -392,6 +397,8 @@ function addUserToPlaylist(uri){
     }
 }
 
+
+// fetches members of a playlist which happens upon click to navigate to a specific playlist
 function fetchPlaylistMembers(){
   
     return function(dispatch, getState){
