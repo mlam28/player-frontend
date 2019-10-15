@@ -86,7 +86,7 @@ function fetchSharedPlaylists(userId){
     
 }
 
-
+// queue tracks are set in redux state every time user clicks on a specific playlist so that tracks are ready to play. 
 function setQueueTracks(tracks){
     return {type: 'QUEUE-TRACKS', tracks: tracks}
 }
