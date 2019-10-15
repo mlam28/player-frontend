@@ -24,7 +24,7 @@ const StyledPlayer = styled.div`
   width: 100%;
 }
 `
-
+// grabs user information that exists in url after backend redirects to frontend.  then pushes user to the home page. 
 function getUrlParams(search) {
   let hashes = search.slice(search.indexOf('?') + 1).split('&')
   let params = {}

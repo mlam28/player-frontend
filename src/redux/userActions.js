@@ -111,7 +111,7 @@ function pauseMusic(){
     return {type: 'PAUSE'}
 }
 
-
+// fetches to backend to create a new shared playlist
 function makePlaylist(name, imageURL){
 
     return function(dispatch, getState){
@@ -137,7 +137,7 @@ function addPlaylist(playlist){
     return {type: 'ADD', playlist: playlist}
 }
 
-
+// fetch call to rails backend to add song to a shared playlist
 function addSong(e, song, playlist_id){
     console.log('hello')
 
@@ -185,6 +185,7 @@ function addLikeQueue(song){
     return {type: 'ADD-LIKE-QUEUE', song: song}
 }
 
+// fetch call to add a like to a song on a shared playlist
 function fetchAddLike(e, song_id){
 
     return function(dispatch, getState){
@@ -236,6 +237,7 @@ function addDisQueue(song){
     return{type: 'ADD-DISLIKE-SONG', song: song}
 }
 
+// searches spotify upon enter of search bar
 function spotifySearch(input){
 
     return function(dispatch, getState){
@@ -304,6 +306,7 @@ function deleteSongFromQueue(data){
     return {type: 'DELETE-SONG-QUEUE', songId: data.songId}
 }
 
+// sends action to remove song from sharedplaylist reducer after user deletes it from a shared platlist
 function deleteSongFromPlaylist(data){
     return {type: 'DELETE-SONG-FROM-PLAYLIST', songId: data.songId, playlistId: data.playlistId}
 }
